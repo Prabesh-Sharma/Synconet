@@ -1,9 +1,9 @@
---------------Initializing-----------------
+-----------------------Initializing--------------------------------------
 1. Clone the Repository:
 Clone the remote repository to your local machine. This creates a local copy of the repository where you can work on your changes.
 Command: git clone https://github.com/<your-username>/<your-repo>.git
 
---------------Installing packages locally---------
+--------------------Installing packages locally----------------------
 cd synconet/
 cd server/
 npm install
@@ -37,21 +37,21 @@ Command: git commit -m "Your commit message"
 Push your committed changes to the remote branch. This shares your changes with the team.
 Command: git push
 
------------------Syncing---------------------
+----------------------------------------Syncing------------------------------------------------------
 
-7. Switch to Your Feature Branch:
+8. Switch to Your Feature Branch:
 If you’re not already on your feature branch, switch to it. This ensures that you’re working on the correct branch.
 Command: git checkout <your-branch-name>
 
 
 
-8. Fetch the Latest Changes from the Remote:
+9. Fetch the Latest Changes from the Remote:
 Fetch updates from the remote repository. This downloads the latest changes without merging them into your current branch.
 Command: git fetch origin
 
 
 
-9. Merge the Latest Changes from Master into Your Branch:
+10. Merge the Latest Changes from Master into Your Branch:
 Merge the latest changes from the master branch into your feature branch. This helps keep your branch up to date with the main codebase.
 Command: git merge origin/master
 
@@ -63,41 +63,41 @@ Command: git push (or git push --force if rebased)
 
 
 
--------------------Merging--------------------
-10. Switch to the Master Branch:
+----------------------------------------Merging--------------------------------
+11. Switch to the Master Branch:
 Use this command to switch to the master branch, where you want to merge your changes.
 Command: git checkout master
 
 
 
-11. Pull the Latest Changes from the Remote Master:
+12. Pull the Latest Changes from the Remote Master:
 This command updates your local master branch with the latest changes from the remote repository.
 Command: git pull origin master
 
 
-12. Merge Your Feature Branch into Master:
+13. Merge Your Feature Branch into Master:
 This command merges the changes from your feature branch into the master branch.
 Command: git merge <your-branch-name>
 
 
-13. Push the Updated Master to the Remote:
+14. Push the Updated Master to the Remote:
 After merging, you need to push the updated master branch back to the remote repository.
 Command: git push origin master
 
 
 
-14. Deleting
+15. Deleting
 Delete the Branch from the Remote:
 If your feature branch is no longer needed, you can delete it from the remote repository.
 Command: git push origin --delete <your-branch-name>
 
 
 
-15. Delete the Local Branch:
+16. Delete the Local Branch:
 After deleting the branch from the remote, you can also delete your local branch to clean up your workspace.
 Command: git branch -d <your-branch-name>
 
 
 
--------------useful--------------------
-16. git branch -vv
+--------------------------------useful-----------------------------------------------------------
+17. git branch -vv
