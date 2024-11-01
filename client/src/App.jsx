@@ -1,7 +1,19 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import axios from "axios"
+import Home from "./pages/home/Home";
+
+axios.defaults.baseURL = "http://localhost:6969"
+
 function App() {
     return (
-        <div className="flex justify-center items-center h-screen bg-gray-100">
-            <h1 className="text-4xl font-bold text-blue-500">Hello, Tailwind CSS!</h1>
+        <div
+            className="bg-gradient-to-r from-purple-300 to-purple-700 h-screen flex items-center justify-center"
+        >
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                </Routes>
+            </BrowserRouter>
         </div>
     );
 }
