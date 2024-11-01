@@ -3,6 +3,9 @@ import morgan from "morgan"
 import cors from "cors"
 import { config } from "dotenv"
 
+import userRoute from "./src/routes/userRoute.js"
+import connection from "./src/database/database.js"
+
 config()
 const app = express();
 
@@ -15,11 +18,15 @@ app.use(
 )
 app.use(express.json())
 
+connection(process.env.MONGO_URI)
+
 app.get('/', (_, res) => {
     res.status(200).json({
         message: "success"
     })
 })
+
+app.use("/api/user", userRoute)
 
 app.listen(process.env.PORT, () => {
     console.log(`the server has started on port ${process.env.PORT}`)
