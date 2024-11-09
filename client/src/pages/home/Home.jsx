@@ -1,9 +1,14 @@
-import React from 'react'
+import React from 'react';
+import Navigation from './components/Navigation';
+import { Outlet } from 'react-router-dom';
 
 const Home = () => {
     return (
-        <div className='text-lg text-black'>Home</div>
-    )
-}
+        <>
+            <Navigation />
+            <Outlet />
+        </>
+    );
+};
 
-export default Home
+export default Home;
