@@ -9,7 +9,7 @@ import Login from "./pages/auth/Login";
 
 axios.defaults.baseURL = "http://localhost:6969";
 
-const isAuthenticated = true;
+const isAuthenticated = false;
 
 const App = () => {
     return (

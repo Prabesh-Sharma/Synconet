@@ -5,6 +5,10 @@ import jwt from "jsonwebtoken"
 class UserController {
     async register(req, res) {
         const { email, password, username } = req.body
+        email = email.trim()
+        password = password.trim()
+        username = username.trim()
+
         if (!email || !username || !password) {
             return res.status(400).json({
                 error: "bad request"
@@ -32,6 +36,9 @@ class UserController {
 
     async login(req, res) {
         const { email, password } = req.body
+        email = email.trim()
+        password = password.trim()
+
         if (!email || !password) {
             return res.status(400).json({
                 error: "bad request"
