@@ -22,7 +22,7 @@ class UserController {
                 error: "user already exists"
             })
         }
-        const hashedPassword = await bcrypt.hash(password, 10)
+        const hashedPassword = await bcrypt.hash(password, 10) //hashes the password 10 times adds salt each time
         const data = await User.create({
             username: username,
             email: email,

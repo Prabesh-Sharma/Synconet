@@ -6,10 +6,9 @@ import Analytics from "./pages/home/pages/Analytics";
 import Events from "./pages/home/pages/Events";
 import Network from "./pages/home/pages/Network";
 import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 
 axios.defaults.baseURL = "http://localhost:6969";
-
-const isAuthenticated = false;
 
 const App = () => {
     return (
@@ -17,14 +16,14 @@ const App = () => {
             <BrowserRouter>
                 <Routes>
                     <Route path="/login" element={<Login />} />
-                    <Route path="/" element={isAuthenticated ? <Navigate to="/home/dashboard" /> : <Navigate to="/login" />} />
-                    <Route path="/home" element={isAuthenticated ? <Home /> : <Navigate to="/login" />}>
-                        <Route path="dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
-                        <Route path="analytics" element={isAuthenticated ? <Analytics /> : <Navigate to="/login" />} />
-                        <Route path="events" element={isAuthenticated ? <Events /> : <Navigate to="/login" />} />
-                        <Route path="network" element={isAuthenticated ? <Network /> : <Navigate to="/login" />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/" element={<Navigate to="/login" />} />
+                    <Route path="/home" element={<Home />}>
+                        <Route path="dashboard" element={<Dashboard />} />
+                        <Route path="analytics" element={<Analytics />} />
+                        <Route path="events" element={<Events />} />
+                        <Route path="network" element={<Network />} />
                     </Route>
-                    <Route path="*" element={<Navigate to={isAuthenticated ? "/home/dashboard" : "/login"} />} />
                 </Routes>
             </BrowserRouter>
         </main>
