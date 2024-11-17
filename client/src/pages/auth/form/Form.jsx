@@ -27,8 +27,11 @@ const Form = ({ type, onSubmit }) => {
     return (
         <>
             <div className='w-full h-screen gap-x-60 flex flex-row items-center justify-center text-white'>
-                <div className="w-1/4 h-3/4 border border-neutral-500/50 bg-neutral-800/20 rounded 
-            flex flex-col items-center justify-center">
+                <div className="w-5/6 sm:w-1/4 h-3/4 border border-neutral-500/50 bg-neutral-800/20 rounded 
+            flex flex-col items-center justify-center relative">
+                    <div className='block absolute left-3 top-20 sm:hidden opacity-35'>
+                        <img src='/logo.png' className='h-80 w-80' />
+                    </div>
                     {type === "login" ?
                         < div className='text-4xl font-semibold flex mb-2'>welcome back</div> :
                         < div className='text-4xl font-semibold flex mb-2'>welcome</div>
@@ -36,7 +39,7 @@ const Form = ({ type, onSubmit }) => {
                     <form onSubmit={handleSubmit}>
                         {type === "register" && <Input placeholder="Username" type="text" name="username" id="Username" onChange={handleChange} />}
                         <Input placeholder="Email address" name="email" id="Email address" type='email' onChange={handleChange} />
-                        <Input placeholder="Password" name="password" id="Password" type='text' onChange={handleChange} />
+                        <Input placeholder="Password" name="password" id="Password" type='password' onChange={handleChange} />
                         <div className='mt-12 w-full flex justify-center'>
                             {
                                 type === 'register' ?
@@ -53,7 +56,7 @@ const Form = ({ type, onSubmit }) => {
                         </div>
                     </form>
                 </div>
-                <div>
+                <div className='hidden sm:block'>
                     <img src='/logo.png' className='h-60 w-60' />
                 </div>
             </div >

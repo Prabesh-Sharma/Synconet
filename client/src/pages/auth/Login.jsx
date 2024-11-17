@@ -1,6 +1,7 @@
 import React from 'react'
 import Form from './form/Form'
 import { useNavigate } from 'react-router-dom'
+import axios from '../../../axiosConfig.js'
 
 const Login = () => {
     const navigate = useNavigate()
@@ -11,10 +12,12 @@ const Login = () => {
             if (response.status === 200) {
                 localStorage.setItem('token', response.data.token)
                 navigate('/home/dashboard')
+            } else {
+                alert("login failed")
             }
         }
         catch (err) {
-            console.log(err)
+            alert(err?.response?.data?.message)
         }
     }
     return (

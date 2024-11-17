@@ -11,6 +11,7 @@ const app = express();
 
 app.use(morgan("dev"))
 app.use(urlencoded({ extended: "true" }))
+
 app.use(
     cors({
         origin: "*"
@@ -28,6 +29,6 @@ app.get('/', (_, res) => {
 
 app.use("/api/user", userRoute)
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, '0.0.0.0', () => {
     console.log(`the server has started on port ${process.env.PORT}`)
 })

@@ -1,18 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavigationLink from "./NavigationLink";
+import axios from '../../../../axiosConfig.js'
+
 import {
     ChartBarIcon,
     ChartPieIcon,
     CalendarIcon,
     UsersIcon,
 } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
 
 const Navigation = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [username, setUsername] = useState('')
+    const navigate = useNavigate()
 
     const handleOpenClose = () => {
         setIsOpen(!isOpen);
     };
+
+    useEffect(() => {
+        const getUserData = async () => {
+            try {
+                const token = localStorage.getItem('token')
+
+                if (!token) {
+                    return
+                }
+
+                const response = await axios.get('/api/user/getuserinfo', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                const user = response.data.user
+                setUsername(user.username)
+            } catch (err) {
+                alert(err)
+                console.error(err)
+            }
+        }
+        getUserData()
+    }, [])
 
     return (
         <>
@@ -21,12 +50,24 @@ const Navigation = () => {
         ${isOpen ? 'w-64' : 'w-20'}
         transition-all duration-500 ease-in-out`}
             >
-                <div className="flex flex-row w-full justify-between place-items-center">
+                <div className="relative flex flex-row w-full justify-between place-items-center">
                     <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-700 rounded-full" />
+
+                    <div
+                        className={`text-white font-poppins absolute left-10 transition-all duration-1000 ease-in-out ${isOpen ? 'opacity-100' : 'opacity-0'
+                            }`}
+                        style={{
+                            transition: !isOpen ? 'none' : 'opacity 1000ms, transform 1000ms',
+                        }}
+                    >
+                        {username}
+                    </div>
+
                     <button
                         className="p-1 rounded-full flex transform transition-transform duration-500"
                         onClick={() => handleOpenClose()}
                     >
+
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"

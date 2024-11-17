@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken"
 
 class UserController {
     async register(req, res) {
-        const { email, password, username } = req.body
+        let { email, password, username } = req.body
         email = email.trim()
         password = password.trim()
         username = username.trim()
@@ -35,7 +35,7 @@ class UserController {
     }
 
     async login(req, res) {
-        const { email, password } = req.body
+        let { email, password } = req.body
         email = email.trim()
         password = password.trim()
 
@@ -44,19 +44,21 @@ class UserController {
                 error: "bad request"
             })
         }
-        const userData = await User.findOne({ email: email })
-        if (!userData) {
+        const userData = await User.find({ email: email })
+        if (userData.length === 0) {
             return res.status(404).json({
                 error: "email not found"
             })
         }
-        const Matched = await bcrypt.compare(password, userData.password)
+        const Matched = await bcrypt.compare(password, userData[0].password)
         if (Matched) {
-            const token = jwt.sign({ id: "userData._id" }, process.env.jwtsecret, { expiresIn: "1d" })
+            const token = jwt.sign({ id: userData[0]._id }, process.env.jwtsecret, { expiresIn: "1d" })
             res.status(200).json({
                 message: "login sucessful",
                 token,
-                data: userData
+                data: {
+                    username: userData.username,
+                }
             })
         }
         else {
@@ -64,6 +66,24 @@ class UserController {
                 message: "invalid password"
             })
         }
+    }
+
+    async getUserInfo(req, res) {
+        const user = await User.findById(req.user)
+
+        if (!user) {
+            return res.status(404).json({
+                error: "user not found"
+            })
+        }
+
+        res.status(200).json({
+            message: "user data fetched",
+            user: {
+                username: user.username,
+                email: user.email
+            }
+        })
     }
 }
 

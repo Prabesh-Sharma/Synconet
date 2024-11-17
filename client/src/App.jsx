@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import axios from "axios";
 import Home from "./pages/home/Home";
 import Dashboard from "./pages/home/pages/Dashboard";
 import Analytics from "./pages/home/pages/Analytics";
@@ -7,8 +6,6 @@ import Events from "./pages/home/pages/Events";
 import Network from "./pages/home/pages/Network";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-
-axios.defaults.baseURL = "http://localhost:6969";
 
 const App = () => {
     return (
