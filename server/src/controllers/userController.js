@@ -4,10 +4,7 @@ import jwt from "jsonwebtoken"
 
 class UserController {
     async register(req, res) {
-        let { email, password, username } = req.body
-        email = email.trim()
-        password = password.trim()
-        username = username.trim()
+        const { email, password, username } = req.body
 
         if (!email || !username || !password) {
             return res.status(400).json({
@@ -35,9 +32,7 @@ class UserController {
     }
 
     async login(req, res) {
-        let { email, password } = req.body
-        email = email.trim()
-        password = password.trim()
+        const { email, password } = req.body
 
         if (!email || !password) {
             return res.status(400).json({

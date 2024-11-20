@@ -1,67 +1,68 @@
-//create context needs a default value
-//get the data from the login component to the login function
-/**
- * createContext
- * Context.Provider has props and returns the children
- * wrap with the provider
- * export useContext pass in the context created to useContext
- */
+import { createContext, useContext, useState, useEffect } from "react";
+import axios from '../../axiosConfig.js';
 
-import { createContext, useContext, useState } from "react";
+const AuthContext = createContext({
+    login: () => { },
+    logout: () => { },
+    isAuthenticated: false
+});
 
-const AuthContext = createContext()
+export const AuthProvider = ({ children }) => {
+    const [token, setToken] = useState(localStorage.getItem('token'));
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-const AuthProvider = ({ children }) => {
-    const [token, setToken] = useState(localStorage.getItem('token'))
-
-    const login = async ({ userData }) => {
+    const login = async (userData) => {
         try {
-            const response = await axios.post('/api/user/login', userData)
+            const response = await axios.post('/api/user/login', userData);
             if (response.status === 200) {
-                localStorage.setItem('token', response.data.token)
+                const newToken = response.data.token;
+                localStorage.setItem('token', newToken);
+                setToken(newToken);
+                setIsAuthenticated(true);
+                return { success: true };
             } else {
-                alert("login failed")
+                return { success: false };
             }
+        } catch (err) {
+            return { success: false };
         }
-        catch (err) {
-            alert(err?.response?.data?.message)
-        }
-    }
+    };
 
     const logout = () => {
-        localStorage.removeItem('token')
-        setToken(null)
-    }
-
-    isAuthenticated = !!token
+        localStorage.removeItem('token');
+        setToken(null);
+        setIsAuthenticated(false);
+    };
 
     useEffect(() => {
-        const validate = async () => {
+        const validateToken = async () => {
             if (token) {
                 try {
                     const response = await axios.get("/api/user/getuserinfo", {
                         headers: {
                             Authorization: `Bearer ${token}`
                         }
-                    })
+                    });
+
+                    if (response.status === 200) {
+                        setIsAuthenticated(true);
+                    }
+                } catch (err) {
+                    console.log("Token validation failed");
+                    logout();
                 }
-                catch (err) {
-                    console.log("error validating token or token expired")
-                    logout()
-                }
+            } else {
+                setIsAuthenticated(false);
             }
-        }
-        validate()
-    }, [token])
+        };
+        validateToken();
+    }, [token]);
 
-    return
-    (
-        <AuthContext.Provider value={{
-            login, logout, isAuthenticated
-        }}>
+    return (
+        <AuthContext.Provider value={{ login, logout, isAuthenticated }}>
             {children}
-        </AuthContext.Provider >
-    )
-}
+        </AuthContext.Provider>
+    );
+};
 
-export const useAuth = () => useContext(AuthContext)
+export const useAuth = () => useContext(AuthContext);

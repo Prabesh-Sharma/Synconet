@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Input from './components/Input'
 import { useNavigate } from 'react-router-dom'
 
-const Form = ({ type, onSubmit }) => {
+const Form = ({ type, onSubmit, error }) => {
     const navigate = useNavigate()
     const [data, setData] = useState({
         email: '',
@@ -40,6 +40,13 @@ const Form = ({ type, onSubmit }) => {
                         {type === "register" && <Input placeholder="Username" type="text" name="username" id="Username" onChange={handleChange} />}
                         <Input placeholder="Email address" name="email" id="Email address" type='email' onChange={handleChange} />
                         <Input placeholder="Password" name="password" id="Password" type='password' onChange={handleChange} />
+                        <div>
+                            {error && (
+                                <div className="text-red-500 text-sm flex absolute mt-4">
+                                    {error}
+                                </div>
+                            )}
+                        </div>
                         <div className='mt-12 w-full flex justify-center'>
                             {
                                 type === 'register' ?
