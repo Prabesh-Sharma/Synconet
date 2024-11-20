@@ -6,6 +6,7 @@ import axios from '../../../axiosConfig.js'
 const Login = () => {
     const navigate = useNavigate()
 
+    //import login with useAuth and pass in the data to the login function
     const handleLogin = async (data) => {
         try {
             const response = await axios.post('/api/user/login', data)

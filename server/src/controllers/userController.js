@@ -1,5 +1,5 @@
 import User from "../model/userModel.js"
-import bcrypt, { hash } from "bcrypt"
+import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 
 class UserController {
@@ -56,9 +56,6 @@ class UserController {
             res.status(200).json({
                 message: "login sucessful",
                 token,
-                data: {
-                    username: userData.username,
-                }
             })
         }
         else {

@@ -54,11 +54,8 @@ const Navigation = () => {
                     <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-700 rounded-full" />
 
                     <div
-                        className={`text-white font-poppins absolute left-10 transition-all duration-1000 ease-in-out ${isOpen ? 'opacity-100' : 'opacity-0'
-                            }`}
-                        style={{
-                            transition: !isOpen ? 'none' : 'opacity 1000ms, transform 1000ms',
-                        }}
+                        className={`text-white font-poppins absolute left-10 ease-in-out 
+                            } ${!isOpen ? 'opacity-0' : 'opacity-100 transition-[opacity,transform] duration-1000'}`}
                     >
                         {username}
                     </div>
