@@ -9,7 +9,7 @@ const AuthContext = createContext({
 
 export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem('token'));
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(!!token);
 
     const login = async (userData) => {
         try {
