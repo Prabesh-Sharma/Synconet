@@ -9,7 +9,7 @@ const NavigationLink = ({ children, name, isOpen, to }) => {
         >
             {children}
             <p
-                className={`text-inherit tracking-wide transition-opacity duration-500 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+                className={`text-inherit tracking-wide transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
                 style={{ visibility: isOpen ? 'visible' : 'hidden' }}
             >
                 {name}
