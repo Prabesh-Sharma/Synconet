@@ -10,10 +10,14 @@ const Login = () => {
 
     const handleLogin = async (data) => {
         try {
-            const result = await login(data);
-            if (result.success) {
+            const response = await login(data);
+            if (response.status === 200) {
                 navigate('/home/dashboard');
-            } else {
+            } else if (response.status === 400) {
+                setErrorMessage('Email not Verified');
+            } else if (response.status === 404) {
+                setErrorMessage('Email not found.');
+            } else if (response.status === 401) {
                 setErrorMessage('Invalid email or password.');
             }
         } catch (error) {

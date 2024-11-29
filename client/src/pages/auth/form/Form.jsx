@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Input from './components/Input'
 import { useNavigate } from 'react-router-dom'
 
-const Form = ({ type, onSubmit, error }) => {
+const Form = ({ type, onSubmit, errorMessage, message, setMessage, setErrorMessage }) => {
     const navigate = useNavigate()
     const [data, setData] = useState({
         email: '',
@@ -22,6 +22,13 @@ const Form = ({ type, onSubmit, error }) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         onSubmit(data)
+        setData({
+            username: "",
+            email: "",
+            password: "",
+        })
+        setErrorMessage('')
+        setMessage('')
     }
 
     return (
@@ -37,13 +44,18 @@ const Form = ({ type, onSubmit, error }) => {
                         < div className='text-4xl font-semibold flex mb-2'>welcome</div>
                     }
                     <form onSubmit={handleSubmit}>
-                        {type === "register" && <Input placeholder="Username" type="text" name="username" id="Username" onChange={handleChange} />}
-                        <Input placeholder="Email address" name="email" id="Email address" type='email' onChange={handleChange} />
-                        <Input placeholder="Password" name="password" id="Password" type='password' onChange={handleChange} />
+                        {type === "register" && <Input placeholder="Username" type="text" value={data.username} name="username" id="Username" onChange={handleChange} />}
+                        <Input placeholder="Email address" name="email" id="Email address" value={data.email} type='email' onChange={handleChange} />
+                        <Input placeholder="Password" name="password" id="Password" value={data.password} type='password' onChange={handleChange} />
                         <div>
-                            {error && (
+                            {errorMessage && (
                                 <div className="text-red-500 text-sm flex absolute mt-4">
-                                    {error}
+                                    {errorMessage}
+                                </div>
+                            )}
+                            {message && (
+                                <div className="text-green-500 text-sm flex absolute mt-4">
+                                    {message}
                                 </div>
                             )}
                         </div>

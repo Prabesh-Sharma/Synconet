@@ -19,13 +19,12 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("token", newToken);
         setToken(newToken);
         setIsAuthenticated(true);
-        return { success: true };
-      } else {
-        return { success: false };
+        return response
       }
+      return response
     } catch (err) {
       console.log(err)
-      return { success: false };
+      return err.response || 500
     }
   };
 

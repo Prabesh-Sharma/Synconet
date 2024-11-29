@@ -1,8 +1,8 @@
-const Input = ({ placeholder, id, name, onChange, type }) => {
+const Input = ({ placeholder, id, name, onChange, type, value }) => {
 
     return (
         <div className="relative mt-10">
-            <input type={type} autoComplete="off" onChange={onChange} placeholder={placeholder} name={name} id={id}
+            <input type={type} value={value} autoComplete="off" onChange={onChange} placeholder={placeholder} name={name} id={id}
                 className="peer h-10 w-72 bg-transparent border-b-2 border-gray-300 text-white 
                 placeholder-transparent focus:outline-none focus:border-blue-600 p-1"
             />
