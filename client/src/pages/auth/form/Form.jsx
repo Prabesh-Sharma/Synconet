@@ -50,8 +50,8 @@ const Form = ({ type, onSubmit, error }) => {
                         <div className='mt-12 w-full flex justify-center'>
                             {
                                 type === 'register' ?
-                                    <button className=' bg-slate-50 p-1 rounded-md text-gray-900' type='submit'>sign up</button> :
-                                    <button className=' bg-slate-50 p-1 rounded-md text-gray-900' type='submit'>sign in</button>
+                                    <button className=' bg-slate-50 px-2 py-1 rounded-md text-gray-900 hover:bg-blue-700 hover:text-slate-50' type='submit'>sign up</button> :
+                                    <button className=' bg-slate-50 px-2 py-1 rounded-md text-gray-900 hover:bg-blue-700 hover:text-slate-50' type='submit'>sign in</button>
                             }
                         </div>
                         <div className='mt-2 w-full flex justify-center'>

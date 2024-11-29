@@ -50,12 +50,13 @@ const Navigation = () => {
     return (
         <>
             <nav
-                className={`bg-neutral-900 flex flex-col z-10 gap-14 p-5 absolute top-0 left-0 h-full shadow shadow-neutral-600
+                className={`bg-neutral-900 flex flex-col justify-between z-10 p-5 absolute top-0 left-0 h-lvh shadow shadow-neutral-600
         ${isOpen ? 'w-56' : 'w-20'}
         transition-all duration-300 ease-in-out`}
                 onMouseEnter={handleOpenClose}
                 onMouseLeave={handleOpenClose}
             >
+                <div className="flex flex-col gap-14">
                 <div className="relative flex flex-row w-full justify-between place-items-center">
                     <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full" />
 
@@ -81,7 +82,8 @@ const Navigation = () => {
                         <UserGroupIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
                     </NavigationLink>
                 </div>
-                <div className="flex flex-col mt-52 gap-3">
+                </div>
+                <div className="flex flex-col gap-3">
                     <NavigationLink name="settings" isOpen={isOpen} to='/home/settings'>
                         <CogIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
                     </NavigationLink>
