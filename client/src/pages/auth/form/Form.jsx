@@ -50,15 +50,15 @@ const Form = ({ type, onSubmit, error }) => {
                         <div className='mt-12 w-full flex justify-center'>
                             {
                                 type === 'register' ?
-                                    <button className=' bg-slate-50 px-2 py-1 rounded-md text-gray-900 hover:bg-blue-700 hover:text-slate-50' type='submit'>sign up</button> :
-                                    <button className=' bg-slate-50 px-2 py-1 rounded-md text-gray-900 hover:bg-blue-700 hover:text-slate-50' type='submit'>sign in</button>
+                                    <button className=' bg-slate-50 px-2 py-1 rounded-md text-blue-950 hover:bg-blue-800 hover:text-slate-50 hover:rounded-3xl hover:border-slate-50 transition-all border-blue-800 border-2' type='submit'>Sign up</button> :
+                                    <button className=' bg-slate-50 px-2 py-1 rounded-md text-blue-950 hover:bg-blue-800 hover:text-slate-50 hover:rounded-3xl hover:border-slate-50 transition-all border-blue-800 border-2' type='submit'>Log in</button>
                             }
                         </div>
                         <div className='mt-2 w-full flex justify-center'>
                             {
                                 type === 'register' ?
-                                    <span onClick={() => navigate('/login')} className='text-blue-700 hover:underline cursor-pointer'>Already signed in? Login</span > :
-                                    <span onClick={() => navigate('/register')} className='text-blue-700 hover:underline cursor-pointer'>Don't have an account? signUp</span >
+                                    <span onClick={() => navigate('/login')} className='text-blue-600 hover:underline cursor-pointer'>Already signed in? Login</span > :
+                                    <span onClick={() => navigate('/register')} className='text-blue-600 hover:underline cursor-pointer'>Don't have an account? SignUp</span >
                             }
                         </div>
                     </form>
