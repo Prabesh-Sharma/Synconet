@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Input from './components/Input'
 import { useNavigate } from 'react-router-dom'
+import { ArrowRightEndOnRectangleIcon, UserPlusIcon } from '@heroicons/react/24/outline'
 
 const Form = ({ type, onSubmit, errorMessage, message, setMessage, setErrorMessage }) => {
     const navigate = useNavigate()
@@ -21,7 +22,6 @@ const Form = ({ type, onSubmit, errorMessage, message, setMessage, setErrorMessa
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        onSubmit(data)
         setData({
             username: "",
             email: "",
@@ -29,6 +29,7 @@ const Form = ({ type, onSubmit, errorMessage, message, setMessage, setErrorMessa
         })
         setErrorMessage('')
         setMessage('')
+        onSubmit(data)
     }
 
     return (
@@ -49,12 +50,12 @@ const Form = ({ type, onSubmit, errorMessage, message, setMessage, setErrorMessa
                         <Input placeholder="Password" name="password" id="Password" value={data.password} type='password' onChange={handleChange} />
                         <div>
                             {errorMessage && (
-                                <div className="text-red-500 text-sm flex absolute mt-4">
+                                <div className="text-red-500 text-sm italic flex absolute mt-4">
                                     {errorMessage}
                                 </div>
                             )}
                             {message && (
-                                <div className="text-green-500 text-sm flex absolute mt-4">
+                                <div className="text-green-500 text-sm italic flex absolute mt-4">
                                     {message}
                                 </div>
                             )}
@@ -62,8 +63,15 @@ const Form = ({ type, onSubmit, errorMessage, message, setMessage, setErrorMessa
                         <div className='mt-12 w-full flex justify-center'>
                             {
                                 type === 'register' ?
-                                    <button className=' bg-slate-50 px-2 py-1 rounded-md text-blue-950 hover:bg-blue-800 hover:text-slate-50 hover:rounded-3xl hover:border-slate-50 transition-all border-blue-800 border-2' type='submit'>Sign up</button> :
-                                    <button className=' bg-slate-50 px-2 py-1 rounded-md text-blue-950 hover:bg-blue-800 hover:text-slate-50 hover:rounded-3xl hover:border-slate-50 transition-all border-blue-800 border-2' type='submit'>Log in</button>
+                                    <button className=' bg-slate-50 px-2 py-1 rounded-md text-blue-950 
+                                    hover:bg-blue-800 hover:text-slate-50 hover:rounded-3xl hover:border-slate-50 
+                                    transition-all border-blue-800 border-2 flex flex-row gap-1 stroke-[2]'
+                                        type='submit'>Sign up<UserPlusIcon className="stroke-[1.75] min-w-6 w-6" /></button> :
+
+                                    <button className=' bg-slate-50 px-2 py-1 rounded-md text-blue-950 
+                                    hover:bg-blue-800 hover:text-slate-50 hover:rounded-3xl hover:border-slate-50 
+                                    transition-all border-blue-800 border-2 flex flex-row gap-1'
+                                        type='submit'>Login<ArrowRightEndOnRectangleIcon className="stroke-[1.75] min-w-6 w-6" /></button>
                             }
                         </div>
                         <div className='mt-2 w-full flex justify-center'>

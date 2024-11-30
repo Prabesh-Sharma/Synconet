@@ -7,6 +7,7 @@ const Login = () => {
     const navigate = useNavigate();
     const { login } = useAuth();
     const [errorMessage, setErrorMessage] = useState('');
+    const [message, setMessage] = useState('')
 
     const handleLogin = async (data) => {
         try {
@@ -27,7 +28,7 @@ const Login = () => {
 
     return (
         <>
-            <Form type="login" onSubmit={handleLogin} error={errorMessage} />
+            <Form type="login" onSubmit={handleLogin} error={errorMessage} setErrorMessage={setErrorMessage} setMessage={setMessage} message={message} />
         </>
     );
 };
