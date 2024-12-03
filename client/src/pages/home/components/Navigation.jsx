@@ -57,31 +57,31 @@ const Navigation = () => {
                 onMouseLeave={handleOpenClose}
             >
                 <div className="flex flex-col gap-14">
-                <div className="relative flex flex-row w-full justify-between place-items-center">
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full" />
+                    <div className="relative flex flex-row w-full justify-between place-items-center">
+                        <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full" />
 
-                    <div
-                        className={`flex absolute left-12 text-neutral-100 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
-                        style={{ visibility: isOpen ? 'visible' : 'hidden' }}
-                    >
-                        {username}
+                        <div
+                            className={`flex absolute left-12 text-neutral-100 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+                            style={{ visibility: isOpen ? 'visible' : 'hidden' }}
+                        >
+                            {username}
+                        </div>
+
                     </div>
-
-                </div>
-                <div className="flex flex-col gap-3">
-                    <NavigationLink name="Dashboard" isOpen={isOpen} to='/home/dashboard' >
-                        <RectangleGroupIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
-                    </NavigationLink>
-                    <NavigationLink name="Events" isOpen={isOpen} to='/home/events'>
-                        <CalendarDateRangeIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
-                    </NavigationLink>
-                    <NavigationLink name="Analytics" isOpen={isOpen} to='/home/analytics'>
-                        <ChartPieIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
-                    </NavigationLink>
-                    <NavigationLink name="Network" isOpen={isOpen} to='/home/network'>
-                        <UserGroupIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
-                    </NavigationLink>
-                </div>
+                    <div className="flex flex-col gap-3">
+                        <NavigationLink name="Dashboard" isOpen={isOpen} to='/home/dashboard' >
+                            <RectangleGroupIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+                        </NavigationLink>
+                        <NavigationLink name="Events" isOpen={isOpen} to='/home/events'>
+                            <CalendarDateRangeIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+                        </NavigationLink>
+                        <NavigationLink name="Analytics" isOpen={isOpen} to='/home/analytics'>
+                            <ChartPieIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+                        </NavigationLink>
+                        <NavigationLink name="Network" isOpen={isOpen} to='/home/network'>
+                            <UserGroupIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+                        </NavigationLink>
+                    </div>
                 </div>
                 <div className="flex flex-col gap-3">
                     <NavigationLink name="settings" isOpen={isOpen} to='/home/settings'>
