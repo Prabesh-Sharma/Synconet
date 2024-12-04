@@ -8,7 +8,7 @@ const Analytics = () => {
                 <h1 className="text-4xl text-neutral-200">Analytics</h1>
             </Layout.Header>
             <Layout.Main>
-                <div className='text-xl text-neutral-200'>main is here</div>
+                <div className='text-xl text-neutral-200'>main content is here</div>
             </Layout.Main>
         </Layout>
     )
