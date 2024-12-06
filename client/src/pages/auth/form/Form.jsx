@@ -35,9 +35,10 @@ const Form = ({ type, onSubmit, errorMessage, message, setMessage, setErrorMessa
     return (
         <>
             <div className='w-full h-screen gap-x-60 flex flex-row items-center justify-center text-white'>
-                <div className="w-5/6 sm:w-1/4 h-3/4 border border-neutral-500/50 bg-neutral-800/20 rounded 
+                <div className="w-11/12 md:w-1/2 lg:w-1/3 xl:w-1/4 h-3/4 border border-neutral-500/50 bg-neutral-800/20 rounded 
             flex flex-col items-center justify-center relative">
-                    <div className='block absolute left-3 top-20 sm:hidden opacity-35'>
+                    <div
+                        className='absolute top-0 left-0 w-full h-full flex items-center justify-center lg:hidden opacity-35 z-10'>
                         <img src='/logo.png' className='h-80 w-80' />
                     </div>
                     {type === "login" ?
@@ -68,7 +69,7 @@ const Form = ({ type, onSubmit, errorMessage, message, setMessage, setErrorMessa
                                     transition-all border-blue-800 border-2 flex flex-row gap-1 stroke-[2]'
                                         type='submit'>Sign up<UserPlusIcon className="stroke-[1.75] min-w-6 w-6" /></button> :
 
-                                    <button className=' bg-slate-50 px-2 py-1 rounded-md text-blue-950 
+                                    <button className='bg-slate-50 px-2 py-1 rounded-md text-blue-950 
                                     hover:bg-blue-800 hover:text-slate-50 hover:rounded-3xl hover:border-slate-50 
                                     transition-all border-blue-800 border-2 flex flex-row gap-1'
                                         type='submit'>Login<ArrowRightEndOnRectangleIcon className="stroke-[1.75] min-w-6 w-6" /></button>
@@ -83,7 +84,7 @@ const Form = ({ type, onSubmit, errorMessage, message, setMessage, setErrorMessa
                         </div>
                     </form>
                 </div>
-                <div className='hidden sm:block'>
+                <div className='hidden lg:flex'>
                     <img src='/logo.png' className='h-60 w-60' />
                 </div>
             </div >

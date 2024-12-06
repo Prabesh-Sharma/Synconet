@@ -10,13 +10,11 @@ import {
     ArrowLeftStartOnRectangleIcon,
     CogIcon,
 } from "@heroicons/react/24/outline";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext.jsx";
 
 const Navigation = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [username, setUsername] = useState('')
-    const navigate = useNavigate()
     const { logout } = useAuth()
 
     const handleOpenClose = () => {
@@ -50,7 +48,7 @@ const Navigation = () => {
     return (
         <>
             <nav
-                className={`bg-neutral-900 flex flex-col justify-between z-10 p-5 absolute top-0 left-0 h-lvh shadow shadow-neutral-600
+                className={`bg-neutral-900 flex flex-col justify-between z-10 p-5 fixed top-0 left-0 h-lvh shadow shadow-neutral-600
         ${isOpen ? 'w-56' : 'w-20'}
         transition-all duration-300 ease-in-out`}
                 onMouseEnter={handleOpenClose}

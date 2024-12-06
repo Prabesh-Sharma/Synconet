@@ -12,7 +12,7 @@ import Settings from "./pages/home/pages/Settings";
 
 const App = () => {
     return (
-        <main className="w-full h-screen flex flex-row relative">
+        <main className="w-full flex flex-row relative">
             <AuthProvider>
                 <BrowserRouter>
                     <Routes>

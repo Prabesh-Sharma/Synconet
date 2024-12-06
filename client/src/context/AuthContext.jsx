@@ -2,8 +2,8 @@ import { createContext, useContext, useState, useEffect } from "react";
 import axios from "../../axiosConfig.js";
 
 const AuthContext = createContext({
-  login: () => { },
-  logout: () => { },
+  login: () => {},
+  logout: () => {},
   isAuthenticated: false,
 });
 
@@ -19,12 +19,12 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("token", newToken);
         setToken(newToken);
         setIsAuthenticated(true);
-        return response
+        return response;
       }
-      return response
+      return response;
     } catch (err) {
-      console.log(err)
-      return err.response || 500
+      console.log(err);
+      return err.response || 500;
     }
   };
 
@@ -66,4 +66,3 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
-

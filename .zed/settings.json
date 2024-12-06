@@ -1,0 +1,10 @@
+{
+  "vim_mode": true,
+  "vim": {
+    "leader_key": " "
+  },
+  "editor": {
+    "format_on_save": true,
+    "relative_line_numbers": true
+  }
+}
