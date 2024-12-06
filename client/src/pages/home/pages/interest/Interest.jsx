@@ -2,15 +2,25 @@ import { useEffect, useState } from "react";
 import {
     BookOpenIcon,
     CameraIcon,
-    CubeTransparentIcon,
     MusicalNoteIcon,
-    SparklesIcon,
-    ComputerDesktopIcon,
-    MapIcon,
     BeakerIcon,
     CodeBracketIcon,
-    PaintBrushIcon
+    PencilSquareIcon,
+    CpuChipIcon
 } from "@heroicons/react/24/outline";
+import {
+    Clapperboard,
+    CookingPot,
+    Dumbbell,
+    Gamepad2,
+    Palette,
+    Pi,
+    PlaneTakeoff,
+    Telescope,
+    Trees,
+    Trophy
+} from 'lucide-react'
+
 import InterestButton from "../../components/InterestButton";
 
 const Interest = () => {
@@ -46,23 +56,44 @@ const Interest = () => {
                     <InterestButton type="Photography" handleClick={handleClick}>
                         <CameraIcon className="h-5 w-5 text-inherit" />
                     </InterestButton>
-                    <InterestButton type="Technology" handleClick={handleClick}>
-                        <ComputerDesktopIcon className="h-5 w-5 text-inherit" />
-                    </InterestButton>
                     <InterestButton type="Sports" handleClick={handleClick}>
-                        <CubeTransparentIcon className="h-5 w-5 text-inherit" />
+                        <Trophy className="h-5 w-5 text-inherit" />
                     </InterestButton>
                     <InterestButton type="Space" handleClick={handleClick}>
-                        <SparklesIcon className="h-5 w-5 text-inherit" />
+                        <Telescope className="h-5 w-5 text-inherit" />
                     </InterestButton>
                     <InterestButton type="Travelling" handleClick={handleClick}>
-                        <MapIcon className="h-5 w-5 text-inherit" />
+                        <PlaneTakeoff className="h-5 w-5 text-inherit" />
                     </InterestButton>
                     <InterestButton type="Programming" handleClick={handleClick}>
                         <CodeBracketIcon className="h-5 w-5 text-inherit" />
                     </InterestButton>
                     <InterestButton type="Art" handleClick={handleClick}>
-                        <PaintBrushIcon className="h-5 w-5 text-inherit" />
+                        <Palette className="h-5 w-5 text-inherit" />
+                    </InterestButton>
+                    <InterestButton type="Mathematics" handleClick={handleClick}>
+                        <Pi className="h-5 w-5 text-inherit" />
+                    </InterestButton>
+                    <InterestButton type="Writing" handleClick={handleClick}>
+                        <PencilSquareIcon className="h-5 w-5 text-inherit" />
+                    </InterestButton>
+                    <InterestButton type="Fitness" handleClick={handleClick}>
+                        <Dumbbell className="h-5 w-5 text-inherit" />
+                    </InterestButton>
+                    <InterestButton type="Technology" handleClick={handleClick}>
+                        <CpuChipIcon className="h-5 w-5 text-inherit" />
+                    </InterestButton>
+                    <InterestButton type="Movies" handleClick={handleClick}>
+                        <Clapperboard className="h-5 w-5 text-inherit" />
+                    </InterestButton>
+                    <InterestButton type="Gaming" handleClick={handleClick}>
+                        <Gamepad2 className="h-5 w-5 text-inherit" />
+                    </InterestButton>
+                    <InterestButton type="Cooking" handleClick={handleClick}>
+                        <CookingPot className="h-5 w-5 text-inherit" />
+                    </InterestButton>
+                    <InterestButton type="Nature" handleClick={handleClick}>
+                        <Trees className="h-5 w-5 text-inherit" />
                     </InterestButton>
                 </div>
             </div>
