@@ -5,6 +5,7 @@ import { config } from "dotenv"
 
 import userRoute from "./src/routes/userRoute.js"
 import connection from "./src/database/database.js"
+import interestRoute from './src/routes/interestRoute.js'
 
 config()
 const app = express();
@@ -28,6 +29,7 @@ app.get('/', (_, res) => {
 })
 
 app.use("/api/user", userRoute)
+app.use("/api/interest", interestRoute)
 
 app.listen(process.env.PORT, '0.0.0.0', () => {
     console.log(`the server has started on port ${process.env.PORT}`)
