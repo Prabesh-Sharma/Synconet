@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Input from './components/Input'
 import { useNavigate } from 'react-router-dom'
 import { ArrowRightEndOnRectangleIcon, UserPlusIcon } from '@heroicons/react/24/outline'
+import { MailCheck } from 'lucide-react'
 
 const Form = ({ type, onSubmit, errorMessage, message, setMessage, setErrorMessage }) => {
     const navigate = useNavigate()
@@ -38,7 +39,7 @@ const Form = ({ type, onSubmit, errorMessage, message, setMessage, setErrorMessa
                 <div className="w-11/12 md:w-1/2 lg:w-1/3 xl:w-1/4 h-3/4 border border-neutral-500/50 bg-neutral-800/20 rounded 
             flex flex-col items-center justify-center relative">
                     <div
-                        className='absolute top-0 left-0 w-full h-full flex items-center justify-center lg:hidden opacity-35 z-10'>
+                        className='absolute top-0 left-0 w-full h-full flex items-center justify-center lg:hidden opacity-35 -z-10'>
                         <img src='/logo.png' className='h-80 w-80' />
                     </div>
                     {type === "login" ?
@@ -57,7 +58,10 @@ const Form = ({ type, onSubmit, errorMessage, message, setMessage, setErrorMessa
                             )}
                             {message && (
                                 <div className="text-green-500 text-sm italic flex absolute mt-4">
-                                    {message}
+                                    <div className='mr-2'>
+                                        {message}
+                                    </div>
+                                    <MailCheck className='text-inherit' />
                                 </div>
                             )}
                         </div>

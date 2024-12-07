@@ -1,6 +1,5 @@
-import React from 'react'
+import InterestPage from './interest/InterestPage'
 import Layout from '../components/Layout'
-import Interest from './interest/Interest'
 
 const Dashboard = () => {
     return (
@@ -10,7 +9,7 @@ const Dashboard = () => {
                     <h1 className="text-4xl text-neutral-200">Dashboard</h1>
                 </Layout.Header>
                 <Layout.Main>
-                    <Interest />
+                    <InterestPage />
                 </Layout.Main>
             </Layout>
         </>

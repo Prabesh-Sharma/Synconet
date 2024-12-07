@@ -1,4 +1,5 @@
 import Layout from "../components/Layout";
+import Recommendation from "./recommendation/Recommendation";
 
 const Analytics = () => {
   return (
@@ -7,7 +8,7 @@ const Analytics = () => {
         <h1 className="text-4xl text-neutral-200">Network</h1>
       </Layout.Header>
       <Layout.Main>
-        <div className="text-xl text-neutral-200">main content is here</div>
+        <Recommendation />
       </Layout.Main>
     </Layout>
   );

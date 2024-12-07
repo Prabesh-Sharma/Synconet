@@ -22,7 +22,7 @@ const Layout = ({ children }) => {
                 />
             </div>
 
-            <div className="w-full h-auto border border-neutral-500/50 bg-neutral-800/20 rounded mb-2">
+            <div className="w-full h-auto mb-2">
                 {main}
             </div>
 

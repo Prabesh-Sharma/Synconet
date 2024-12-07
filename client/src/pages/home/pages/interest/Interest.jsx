@@ -6,9 +6,10 @@ import {
     BeakerIcon,
     CodeBracketIcon,
     PencilSquareIcon,
-    CpuChipIcon
+    CpuChipIcon,
 } from "@heroicons/react/24/outline";
 import {
+    CheckCircle,
     Clapperboard,
     CookingPot,
     Dumbbell,
@@ -22,13 +23,41 @@ import {
 } from 'lucide-react'
 
 import InterestButton from "../../components/InterestButton";
+import axios from "../../../../../axiosConfig";
 
-const Interest = () => {
+const Interest = ({ handleInterestUpdates }) => {
     const [interests, setInterests] = useState([]);
+    const [token, _] = useState(localStorage.getItem("token"))
 
     useEffect(() => {
+
         console.log(interests);
     }, [interests]);
+
+    const sendInterest = async () => {
+        if (!token) {
+            console.log("token not found")
+            return
+        }
+        if (interests.length === 0) {
+            console.log("blank interests can't be sent")
+            return
+        }
+
+        try {
+            const response = await axios.post("/api/interest/set",
+                { interests }
+                , {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+        } catch (err) {
+            console.log("an error has occured", err.response?.data || err.message)
+        }
+        handleInterestUpdates()
+    }
+
 
     const handleClick = (type) => {
         setInterests((prevInterests) => {
@@ -41,7 +70,7 @@ const Interest = () => {
     };
     return (
         <>
-            <div className="p-4">
+            <div className="p-4 flex flex-col items-center border border-neutral-500/50 bg-neutral-800/20 rounded">
                 <div className="text-xl text-neutral-200 italic">Choose Your Interests</div>
                 <div className="flex flex-row flex-wrap gap-8 mt-4">
                     <InterestButton type="Music" handleClick={handleClick}>
@@ -96,6 +125,10 @@ const Interest = () => {
                         <Trees className="h-5 w-5 text-inherit" />
                     </InterestButton>
                 </div>
+                <button className='bg-slate-50 px-2 py-1 rounded-md text-blue-950 
+                                    hover:bg-blue-800 hover:text-slate-50 hover:rounded-3xl hover:border-slate-50 
+                                    transition-all border-blue-800 border-2 flex flex-row gap-1 mt-8'
+                    onClick={sendInterest}>Confirm<CheckCircle className="stroke-[1.75] min-w-6 w-6" /></button>
             </div>
         </>
     )

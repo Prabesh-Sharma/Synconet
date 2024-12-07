@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Form from './form/Form';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.jsx';
@@ -14,21 +14,23 @@ const Login = () => {
             const response = await login(data);
             if (response.status === 200) {
                 navigate('/home/dashboard');
-            } else if (response.status === 400) {
-                setErrorMessage('Email not Verified');
-            } else if (response.status === 404) {
-                setErrorMessage('Email not found.');
-            } else if (response.status === 401) {
-                setErrorMessage('Invalid email or password.');
             }
-        } catch (error) {
-            setErrorMessage('An unexpected error occurred. Please try again.');
+        } catch (err) {
+            if (err.status === 400) {
+                setErrorMessage('Email not Verified');
+            } else if (err.status === 404) {
+                setErrorMessage('Email not found.');
+            } else if (err.status === 401) {
+                setErrorMessage('Invalid email or password.');
+            } else {
+                setErrorMessage('An unexpected error occurred. Please try again.');
+            }
         }
     };
 
     return (
         <>
-            <Form type="login" onSubmit={handleLogin} error={errorMessage} setErrorMessage={setErrorMessage} setMessage={setMessage} message={message} />
+            <Form type="login" onSubmit={handleLogin} errorMessage={errorMessage} setErrorMessage={setErrorMessage} setMessage={setMessage} message={message} />
         </>
     );
 };

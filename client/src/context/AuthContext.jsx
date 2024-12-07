@@ -2,8 +2,8 @@ import { createContext, useContext, useState, useEffect } from "react";
 import axios from "../../axiosConfig.js";
 
 const AuthContext = createContext({
-  login: () => {},
-  logout: () => {},
+  login: () => { },
+  logout: () => { },
   isAuthenticated: false,
 });
 
@@ -21,10 +21,12 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(true);
         return response;
       }
-      return response;
     } catch (err) {
-      console.log(err);
-      return err.response || 500;
+      if (err.response) {
+        throw err.response;
+      } else {
+        throw new Error('An unexpected error occurred.');
+      }
     }
   };
 

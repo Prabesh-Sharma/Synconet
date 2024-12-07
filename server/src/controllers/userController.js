@@ -14,6 +14,13 @@ class UserController {
     }
 
     const userExists = await User.findOne({ email: email })
+    const userNameTaken = await User.findOne({ username: username })
+
+    if (userNameTaken) {
+      return res.status(409).json({
+        error: "username already taken"
+      })
+    }
 
     if (userExists) {
       return res.status(400).json({

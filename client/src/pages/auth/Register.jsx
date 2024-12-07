@@ -9,13 +9,18 @@ const Register = () => {
     const handleRegister = async (data) => {
         try {
             const response = await axios.post('/api/user/register', data)
+            console.log("baka", response.status)
             if (response.status === 201) {
                 setMessage('check mail for verification link')
-            } else {
-                setErrorMessage('User already exists')
             }
         } catch (err) {
-            setErrorMessage('User already exists')
+            if (err.status === 409) {
+                setErrorMessage('UserName already taken')
+            } else if (err.status === 400) {
+                setErrorMessage('Email already registered')
+            } else {
+                setErrorMessage('an unexpected error occured')
+            }
         }
     }
     return (
