@@ -1,99 +1,108 @@
-import { useEffect, useState } from "react";
-import NavigationLink from "./NavigationLink";
+import { useEffect, useState } from 'react'
+import NavigationLink from './NavigationLink'
 import axios from '../../../../axiosConfig.js'
 
 import {
-    RectangleGroupIcon,
-    ChartPieIcon,
-    CalendarDateRangeIcon,
-    UserGroupIcon,
-    ArrowLeftStartOnRectangleIcon,
-    CogIcon,
-} from "@heroicons/react/24/outline";
-import { useAuth } from "../../../context/AuthContext.jsx";
+  RectangleGroupIcon,
+  ChartPieIcon,
+  CalendarDateRangeIcon,
+  UserGroupIcon,
+  ArrowLeftStartOnRectangleIcon,
+  CogIcon,
+} from '@heroicons/react/24/outline'
+import { useAuth } from '../../../context/AuthContext.jsx'
 
 const Navigation = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [username, setUsername] = useState('')
-    const { logout } = useAuth()
+  const [isOpen, setIsOpen] = useState(false)
+  const [username, setUsername] = useState('')
+  const { logout } = useAuth()
 
-    const handleOpenClose = () => {
-        setIsOpen(!isOpen);
-    };
+  const handleOpenClose = () => {
+    setIsOpen(!isOpen)
+  }
 
-    useEffect(() => {
-        const getUserData = async () => {
-            try {
-                const token = localStorage.getItem('token')
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const token = localStorage.getItem('token')
 
-                if (!token) {
-                    return
-                }
-
-                const response = await axios.get('/api/user/getuserinfo', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-                const user = response.data.user
-                setUsername(user.username)
-            } catch (err) {
-                alert(err)
-                console.error(err)
-            }
+        if (!token) {
+          return
         }
-        getUserData()
-    }, [])
 
-    return (
-        <>
-            <nav
-                className={`bg-neutral-900 flex flex-col justify-between z-10 p-5 fixed top-0 left-0 h-lvh shadow shadow-neutral-600
+        const response = await axios.get('/api/user/getuserinfo', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        const user = response.data.user
+        setUsername(user.username)
+      } catch (err) {
+        alert(err)
+        console.error(err)
+      }
+    }
+    getUserData()
+  }, [])
+
+  return (
+    <>
+      <nav
+        className={`bg-neutral-900 flex flex-col justify-between z-10 p-5 fixed top-0 left-0 h-lvh shadow shadow-neutral-600
         ${isOpen ? 'w-56' : 'w-20'}
         transition-all duration-300 ease-in-out`}
-                onMouseEnter={handleOpenClose}
-                onMouseLeave={handleOpenClose}
+        onMouseEnter={handleOpenClose}
+        onMouseLeave={handleOpenClose}
+      >
+        <div className="flex flex-col gap-14">
+          <div className="relative flex flex-row w-full justify-between place-items-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full" />
+
+            <div
+              className={`flex absolute left-12 text-neutral-100 transition-opacity duration-300 ${
+                isOpen ? 'opacity-100' : 'opacity-0'
+              }`}
+              style={{ visibility: isOpen ? 'visible' : 'hidden' }}
             >
-                <div className="flex flex-col gap-14">
-                    <div className="relative flex flex-row w-full justify-between place-items-center">
-                        <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full" />
+              {username}
+            </div>
+          </div>
+          <div className="flex flex-col gap-3">
+            <NavigationLink
+              name="Dashboard"
+              isOpen={isOpen}
+              to="/home/dashboard"
+            >
+              <RectangleGroupIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+            </NavigationLink>
+            <NavigationLink name="Events" isOpen={isOpen} to="/home/events">
+              <CalendarDateRangeIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+            </NavigationLink>
+            <NavigationLink
+              name="Analytics"
+              isOpen={isOpen}
+              to="/home/analytics"
+            >
+              <ChartPieIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+            </NavigationLink>
+            <NavigationLink name="Network" isOpen={isOpen} to="/home/network">
+              <UserGroupIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+            </NavigationLink>
+          </div>
+        </div>
+        <div className="flex flex-col gap-3">
+          <NavigationLink name="settings" isOpen={isOpen} to="/home/settings">
+            <CogIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+          </NavigationLink>
+          <div onClick={logout}>
+            <NavigationLink name="Logout" isOpen={isOpen} to="/login">
+              <ArrowLeftStartOnRectangleIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+            </NavigationLink>
+          </div>
+        </div>
+      </nav>
+    </>
+  )
+}
 
-                        <div
-                            className={`flex absolute left-12 text-neutral-100 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
-                            style={{ visibility: isOpen ? 'visible' : 'hidden' }}
-                        >
-                            {username}
-                        </div>
-
-                    </div>
-                    <div className="flex flex-col gap-3">
-                        <NavigationLink name="Dashboard" isOpen={isOpen} to='/home/dashboard' >
-                            <RectangleGroupIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
-                        </NavigationLink>
-                        <NavigationLink name="Events" isOpen={isOpen} to='/home/events'>
-                            <CalendarDateRangeIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
-                        </NavigationLink>
-                        <NavigationLink name="Analytics" isOpen={isOpen} to='/home/analytics'>
-                            <ChartPieIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
-                        </NavigationLink>
-                        <NavigationLink name="Network" isOpen={isOpen} to='/home/network'>
-                            <UserGroupIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
-                        </NavigationLink>
-                    </div>
-                </div>
-                <div className="flex flex-col gap-3">
-                    <NavigationLink name="settings" isOpen={isOpen} to='/home/settings'>
-                        <CogIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
-                    </NavigationLink>
-                    <div onClick={logout}>
-                        <NavigationLink name="Logout" isOpen={isOpen} to='/login'>
-                            <ArrowLeftStartOnRectangleIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
-                        </NavigationLink>
-                    </div>
-                </div>
-            </nav>
-        </>
-    );
-};
-
-export default Navigation;
+export default Navigation

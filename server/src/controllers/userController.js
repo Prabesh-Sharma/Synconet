@@ -1,7 +1,7 @@
-import User from "../model/userModel.js"
-import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
-import { sendVerificationEmail } from "../services/transporter.js"
+import User from '../model/userModel.js'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import { sendVerificationEmail } from '../services/transporter.js'
 
 class UserController {
   async register(req, res) {
@@ -9,7 +9,7 @@ class UserController {
 
     if (!email || !username || !password) {
       return res.status(400).json({
-        error: "bad request"
+        error: 'bad request',
       })
     }
 
@@ -18,34 +18,30 @@ class UserController {
 
     if (userNameTaken) {
       return res.status(409).json({
-        error: "username already taken"
+        error: 'username already taken',
       })
     }
 
     if (userExists) {
       return res.status(400).json({
-        error: "user already exists"
+        error: 'user already exists',
       })
     }
     const hashedPassword = await bcrypt.hash(password, 10) //hashes the password 10 times adds salt each time
     const data = await User.create({
       username: username,
       email: email,
-      password: hashedPassword
+      password: hashedPassword,
     })
 
-    const verificationToken = jwt.sign(
-      { id: data._id },
-      process.env.jwtsecret,
-      { expiresIn: "1d" }
-    );
+    const verificationToken = jwt.sign({ id: data._id }, process.env.jwtsecret, { expiresIn: '1d' })
 
-    const verificationLink = `http://localhost:6969/api/user/verify-email?token=${verificationToken}`;
+    const verificationLink = `http://localhost:6969/api/user/verify-email?token=${verificationToken}`
 
     await sendVerificationEmail(email, username, verificationLink)
     res.status(201).json({
-      message: "user registered sucessfully",
-      data
+      message: 'user registered sucessfully',
+      data,
     })
   }
 
@@ -54,33 +50,32 @@ class UserController {
 
     if (!email || !password) {
       return res.status(400).json({
-        error: "bad request"
+        error: 'bad request',
       })
     }
     const userData = await User.find({ email: email })
     if (userData.length === 0) {
       return res.status(404).json({
-        error: "email not found"
+        error: 'email not found',
       })
     }
 
     if (!userData[0].isVerified) {
       return res.status(400).json({
-        error: "email not verified"
+        error: 'email not verified',
       })
     }
 
     const Matched = await bcrypt.compare(password, userData[0].password)
     if (Matched) {
-      const token = jwt.sign({ id: userData[0]._id }, process.env.jwtsecret, { expiresIn: "1d" })
+      const token = jwt.sign({ id: userData[0]._id }, process.env.jwtsecret, { expiresIn: '1d' })
       res.status(200).json({
-        message: "login sucessful",
+        message: 'login sucessful',
         token,
       })
-    }
-    else {
+    } else {
       res.status(401).json({
-        message: "invalid email or password"
+        message: 'invalid email or password',
       })
     }
   }
@@ -90,16 +85,16 @@ class UserController {
 
     if (!user) {
       return res.status(404).json({
-        error: "user not found"
+        error: 'user not found',
       })
     }
 
     res.status(200).json({
-      message: "user data fetched",
+      message: 'user data fetched',
       user: {
         username: user.username,
-        email: user.email
-      }
+        email: user.email,
+      },
     })
   }
 
@@ -107,39 +102,39 @@ class UserController {
     const { token } = req.query
     if (!token) {
       return res.status(400).json({
-        error: "Verification token is missing"
-      });
+        error: 'Verification token is missing',
+      })
     }
 
     try {
-      const decoded = jwt.verify(token, process.env.jwtsecret);
-      const user = await User.findById(decoded.id);
+      const decoded = jwt.verify(token, process.env.jwtsecret)
+      const user = await User.findById(decoded.id)
 
       if (!user) {
         return res.status(404).json({
-          error: "User not found"
-        });
+          error: 'User not found',
+        })
       }
 
       if (user.isVerified) {
         return res.status(400).json({
-          message: "Email is already verified"
-        });
+          message: 'Email is already verified',
+        })
       }
 
-      user.isVerified = true;
-      await user.save();
+      user.isVerified = true
+      await user.save()
 
       res.status(200).send(
         `
         <h1>email verification sucessful</h1>
         `
-      );
+      )
     } catch (err) {
-      console.error('Error verifying email:', err);
+      console.error('Error verifying email:', err)
       res.status(400).json({
-        error: "Invalid or expired token"
-      });
+        error: 'Invalid or expired token',
+      })
     }
   }
 }

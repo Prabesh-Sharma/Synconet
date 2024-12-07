@@ -1,5 +1,5 @@
-import Layout from "../components/Layout";
-import Recommendation from "./recommendation/Recommendation";
+import Layout from '../components/Layout'
+import Recommendation from './recommendation/Recommendation'
 
 const Analytics = () => {
   return (
@@ -11,7 +11,7 @@ const Analytics = () => {
         <Recommendation />
       </Layout.Main>
     </Layout>
-  );
-};
+  )
+}
 
-export default Analytics;
+export default Analytics

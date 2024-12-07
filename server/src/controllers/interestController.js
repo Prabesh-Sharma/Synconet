@@ -1,60 +1,60 @@
-import User from "../model/userModel.js"
+import User from '../model/userModel.js'
 
 class InterestController {
+  async getInterest(req, res) {
+    const userId = await req.user
+    const user = await User.findById(userId, 'Interests')
 
-    async getInterest(req, res) {
-        const userId = await req.user
-        const user = await User.findById(userId, 'Interests')
-
-        if (!user) {
-            return res.status(404).json({
-                error: "user not found"
-            })
-        }
-
-        res.status(200).json({
-            interests: user.Interests
-        })
+    if (!user) {
+      return res.status(404).json({
+        error: 'user not found',
+      })
     }
 
-    async setInterest(req, res) {
-        const userId = await req.user
-        const { interests } = req.body
+    res.status(200).json({
+      interests: user.Interests,
+    })
+  }
 
-        if (interests.length === 0) {
-            return res.status(400).json({
-                error: "interests cannot be empty"
-            })
-        }
+  async setInterest(req, res) {
+    const userId = await req.user
+    const { interests } = req.body
 
-        await User.findByIdAndUpdate(
-            userId,
-            { $push: { Interests: { $each: interests } } }
-        )
-
-        res.status(201).json({
-            message: "interests added sucessfully"
-        })
+    if (interests.length === 0) {
+      return res.status(400).json({
+        error: 'interests cannot be empty',
+      })
     }
 
-    async recommendations(req, res) {
-        const userId = await req.user
+    await User.findByIdAndUpdate(userId, {
+      $push: { Interests: { $each: interests } },
+    })
 
-        const currentUser = await User.findById(userId, 'Interests')
-        const interests = currentUser.Interests
+    res.status(201).json({
+      message: 'interests added sucessfully',
+    })
+  }
 
-        const matchingUsers = await User.find(
-            {
-                _id: { $ne: userId },
-                Interests: { $in: interests },
-            }, '-password')
+  async recommendations(req, res) {
+    const userId = await req.user
 
-        return res.status(200).json({
-            message: "recommendations fetched",
-            matchingUsers,
-        })
-    }
+    const currentUser = await User.findById(userId, 'Interests')
+    const interests = currentUser.Interests
+
+    const matchingUsers = await User.find(
+      {
+        _id: { $ne: userId },
+        Interests: { $in: interests },
+      },
+      '-password'
+    )
+
+    return res.status(200).json({
+      message: 'recommendations fetched',
+      matchingUsers,
+    })
+  }
 }
 
 const interestController = new InterestController()
-export default interestController 
+export default interestController
