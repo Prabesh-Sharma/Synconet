@@ -8,32 +8,40 @@ const Recommendation = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    fetchRecommendations()
+  }, [token])
+
+  useEffect(() => {
+    console.log(recomms)
+  }, [recomms])
+
+  const fetchRecommendations = async () => {
     if (!token) {
       console.log('token not found')
       setLoading(false)
       return
     }
     try {
-      const response = axios.get('/api/interest/get/recommendations', {
+      const response = await axios.get('/api/interest/get/recommendations', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
+      const matches = response.data.matchingUsers
+      setRecomms(matches)
     } catch (err) {
       console.log('an error occured', err.response?.data || err.message)
     } finally {
       setLoading(false)
     }
-  }, [])
+  }
 
   return (
     <div className="p-4 flex flex-col items-center border border-neutral-500/50 bg-neutral-800/20 rounded">
       <div className="text-white text-2xl font-semibold">
         People with matching interests
       </div>
-      <div>
-        <Card />
-      </div>
+      <div>{!loading && <Card />}</div>
     </div>
   )
 }
