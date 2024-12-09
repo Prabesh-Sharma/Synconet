@@ -34,11 +34,12 @@ const InterestPage = () => {
   const handleInterestUpdates = () => {
     getInterest()
   }
+
   return (
     <>
       {!loading && interests.length === 0 && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 flex justify-center items-center z-50">
-          <div className="p-8 w-1/2">
+          <div className="p-8 w-full md:w-1/2">
             <Interest handleInterestUpdates={handleInterestUpdates} />
           </div>
         </div>

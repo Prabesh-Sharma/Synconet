@@ -1,7 +1,7 @@
 import Layout from '../components/Layout'
 import Recommendation from './recommendation/Recommendation'
 
-const Analytics = () => {
+const Network = () => {
   return (
     <Layout>
       <Layout.Header>
@@ -14,4 +14,4 @@ const Analytics = () => {
   )
 }
 
-export default Analytics
+export default Network

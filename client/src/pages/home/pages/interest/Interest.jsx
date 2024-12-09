@@ -74,7 +74,7 @@ const Interest = ({ handleInterestUpdates }) => {
         <div className="text-xl text-neutral-200 italic">
           Choose Your Interests
         </div>
-        <div className="flex flex-row flex-wrap gap-8 mt-4">
+        <div className="grid grid-cols-2 md:flex md:flex-row md:flex-wrap gap-3 md:gap-6 mt-4">
           <InterestButton type="Music" handleClick={handleClick}>
             <MusicalNoteIcon className="h-5 w-5" />
           </InterestButton>
