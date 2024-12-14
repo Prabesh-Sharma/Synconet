@@ -20,4 +20,4 @@ npm install
   cp .env.example .env
 ```
 
-##### you can open .env file and insert the necessary environment variables
+##### you can open .env file and insert the necessary environment variable
