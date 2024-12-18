@@ -11,10 +11,6 @@ const Recommendation = () => {
     fetchRecommendations()
   }, [token])
 
-  useEffect(() => {
-    console.log(recomms)
-  }, [recomms])
-
   const fetchRecommendations = async () => {
     if (!token) {
       console.log('token not found')
@@ -41,7 +37,7 @@ const Recommendation = () => {
       <div className="text-white text-2xl font-semibold">
         People with matching interests
       </div>
-      <div>{!loading && <Card />}</div>
+      <div>{!loading && <Card recomms={recomms} />}</div>
     </div>
   )
 }

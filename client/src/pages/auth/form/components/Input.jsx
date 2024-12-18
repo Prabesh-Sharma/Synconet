@@ -23,7 +23,7 @@ const Input = ({ placeholder, id, name, onChange, type, value }) => {
         name={name}
         id={id}
         className="peer h-10 w-72 bg-transparent border-b-2 border-gray-300 text-white 
-                placeholder-transparent focus:outline-none focus:border-blue-600 p-1 pr-10"
+                   placeholder-transparent focus:outline-none focus:border-blue-600 p-1 pr-10"
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />

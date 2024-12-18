@@ -27,7 +27,7 @@ class UserController {
         error: 'user already exists',
       })
     }
-    const hashedPassword = await bcrypt.hash(password, 10) //hashes the password 10 times adds salt each time
+    const hashedPassword = await bcrypt.hash(password, 10) //hashes the password 2^10 times adds salt each time
     const data = await User.create({
       username: username,
       email: email,
@@ -36,7 +36,7 @@ class UserController {
 
     const verificationToken = jwt.sign({ id: data._id }, process.env.jwtsecret, { expiresIn: '1d' })
 
-    const verificationLink = `http://localhost:6969/api/user/verify-email?token=${verificationToken}`
+    const verificationLink = `http://localhost:5000/api/user/verify-email?token=${verificationToken}`
 
     await sendVerificationEmail(email, username, verificationLink)
     res.status(201).json({
