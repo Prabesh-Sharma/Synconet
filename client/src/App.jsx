@@ -9,6 +9,7 @@ import Register from './pages/auth/Register'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './pages/auth/ProtectedRoute'
 import Settings from './pages/home/pages/Settings'
+import Inbox from './pages/home/pages/Inbox'
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
               }
             >
               <Route path="dashboard" element={<Dashboard />} />
+              <Route path="inbox" element={<Inbox />} />
               <Route path="analytics" element={<Analytics />} />
               <Route path="events" element={<Events />} />
               <Route path="network" element={<Network />} />
