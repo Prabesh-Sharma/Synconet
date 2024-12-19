@@ -28,7 +28,7 @@ const Card = ({ recomms }) => {
                   <div
                     key={i}
                     className="px-2 py-1 bg-neutral-700/100 rounded text-sm 
-                               hover:text-white hover:bg-neutral-800 cursor-none 
+                               hover:text-white hover:bg-neutral-800 cursor-pointer 
                                border-slate-200 hover:border-white border-2"
                   >
                     {interest}
