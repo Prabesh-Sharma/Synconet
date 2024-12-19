@@ -4,11 +4,11 @@ import axios from '../../../../axiosConfig.js'
 
 import {
   RectangleGroupIcon,
-  ChartPieIcon,
   CalendarDateRangeIcon,
   UserGroupIcon,
   ArrowLeftStartOnRectangleIcon,
   CogIcon,
+  InboxArrowDownIcon,
 } from '@heroicons/react/24/outline'
 import { useAuth } from '../../../context/AuthContext.jsx'
 
@@ -78,12 +78,8 @@ const Navigation = () => {
             <NavigationLink name="Events" isOpen={isOpen} to="/home/events">
               <CalendarDateRangeIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
             </NavigationLink>
-            <NavigationLink
-              name="Analytics"
-              isOpen={isOpen}
-              to="/home/analytics"
-            >
-              <ChartPieIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+            <NavigationLink name="Inbox" isOpen={isOpen} to="/home/inbox">
+              <InboxArrowDownIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
             </NavigationLink>
             <NavigationLink name="Network" isOpen={isOpen} to="/home/network">
               <UserGroupIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />

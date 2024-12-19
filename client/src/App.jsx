@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Home from './pages/home/Home'
 import Dashboard from './pages/home/pages/Dashboard'
-import Analytics from './pages/home/pages/Analytics'
 import Events from './pages/home/pages/Events'
 import Network from './pages/home/pages/Network'
 import Login from './pages/auth/Login'
@@ -37,7 +36,6 @@ const App = () => {
             >
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="inbox" element={<Inbox />} />
-              <Route path="analytics" element={<Analytics />} />
               <Route path="events" element={<Events />} />
               <Route path="network" element={<Network />} />
               <Route path="settings" element={<Settings />} />
