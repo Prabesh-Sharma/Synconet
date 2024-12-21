@@ -23,8 +23,8 @@ const Layout = ({ children }) => {
       <div className="w-full h-auto mb-2">{main}</div>
 
       <div className="flex flex-col md:flex-row gap-5 w-full">
-        <div className="border-neutral-500/50 h-60 w-full md:w-1/2 bg-neutral-800/20 rounded border"></div>
-        <div className="border-neutral-500/50 h-60 w-full md:w-1/2 bg-neutral-800/20 rounded border"></div>
+        {/* <div className="border-neutral-500/50 h-60 w-full md:w-1/2 bg-neutral-800/20 rounded border"></div>
+        <div className="border-neutral-500/50 h-60 w-full md:w-1/2 bg-neutral-800/20 rounded border"></div> */}
       </div>
     </section>
   )
