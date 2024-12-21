@@ -38,8 +38,8 @@ const Card = ({ recomms }) => {
               <div className="relative flex flex-wrap gap-2 w-30">
                 {recomm.Interests.map((interest, index) => (
                   <div
-                    key={index}
-                    className="px-2 py-1 bg-neutral-800/100 rounded-md text-sm 
+                    key={i}
+                    className="px-2 py-1 bg-neutral-700/100 rounded text-sm 
                                hover:text-white hover:bg-neutral-800 cursor-pointer 
                                border-slate-200 hover:border-white border-2"
                   >
