@@ -27,7 +27,7 @@ import axios from '../../../../../axiosConfig'
 
 const Interest = ({ handleInterestUpdates }) => {
   const [interests, setInterests] = useState([])
-  const [token, _] = useState(localStorage.getItem('token'))
+  const token = localStorage.getItem('token')
 
   useEffect(() => {
     console.log(interests)

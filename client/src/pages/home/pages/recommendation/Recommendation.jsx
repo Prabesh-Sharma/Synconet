@@ -1,35 +1,34 @@
 import React, { useEffect, useState } from 'react'
 import Card from '../../components/Card'
 import axios from '../../../../../axiosConfig'
+import { useQuery } from '@tanstack/react-query'
 
 const Recommendation = () => {
-  const [token, _] = useState(localStorage.getItem('token'))
-  const [recomms, setRecomms] = useState([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    fetchRecommendations()
-  }, [token])
+  const token = localStorage.getItem('token')
 
   const fetchRecommendations = async () => {
     if (!token) {
       console.log('token not found')
-      setLoading(false)
       return
     }
-    try {
-      const response = await axios.get('/api/interest/get/recommendations', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      const matches = response.data.matchingUsers
-      setRecomms(matches)
-    } catch (err) {
-      console.log('an error occured', err.response?.data || err.message)
-    } finally {
-      setLoading(false)
-    }
+    const response = await axios.get('/api/interest/get/recommendations', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response.data.matchingUsers
+  }
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['recomms'],
+    queryFn: fetchRecommendations,
+    enabled: !!token,
+    staleTime: 60 * 1000, //1 min
+    cacheTime: 5 * 60 * 1000, //5 min
+  })
+
+  if (error) {
+    return <div className="text-white bg-red-800">error.message</div>
   }
 
   return (
@@ -37,7 +36,7 @@ const Recommendation = () => {
       <div className="text-white text-2xl font-semibold">
         People with matching interests
       </div>
-      <div>{!loading && <Card recomms={recomms} />}</div>
+      <div>{!isLoading && <Card recomms={data} />}</div>
     </div>
   )
 }

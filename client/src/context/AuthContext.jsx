@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import axios from '../../axiosConfig.js'
 
 const AuthContext = createContext({
@@ -36,29 +37,25 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false)
   }
 
-  useEffect(() => {
-    const validateToken = async () => {
-      if (token) {
-        try {
-          const response = await axios.get('/api/user/getuserinfo', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
+  const validateToken = async () => {
+    const response = await axios.get('/api/user/getuserinfo', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
 
-          if (response.status === 200) {
-            setIsAuthenticated(true)
-          }
-        } catch (err) {
-          console.log('Token validation failed')
-          logout()
-        }
-      } else {
-        setIsAuthenticated(false)
-      }
+    if (response.status === 200) {
+      setIsAuthenticated(true)
     }
-    validateToken()
-  }, [token])
+    return response
+  }
+
+  const { data, error } = useQuery({
+    queryKey: ['login'],
+    queryFn: validateToken,
+    staleTime: 60 * 1000,
+    enabled: !!token,
+  })
 
   return (
     <AuthContext.Provider value={{ login, logout, isAuthenticated }}>
