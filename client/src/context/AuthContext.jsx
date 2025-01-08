@@ -47,18 +47,18 @@ export const AuthProvider = ({ children }) => {
     if (response.status === 200) {
       setIsAuthenticated(true)
     }
-    return response
+    return response.data.user.username
   }
 
-  const { data, error } = useQuery({
+  const { data: username, error } = useQuery({
     queryKey: ['login'],
     queryFn: validateToken,
-    staleTime: 60 * 1000,
+    staleTime: 10 * 1000,
     enabled: !!token,
   })
 
   return (
-    <AuthContext.Provider value={{ login, logout, isAuthenticated }}>
+    <AuthContext.Provider value={{ login, logout, isAuthenticated, username }}>
       {children}
     </AuthContext.Provider>
   )

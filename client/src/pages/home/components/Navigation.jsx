@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import NavigationLink from './NavigationLink'
-import axios from '../../../../axiosConfig.js'
 
 import {
   RectangleGroupIcon,
@@ -14,36 +13,12 @@ import { useAuth } from '../../../context/AuthContext.jsx'
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const [username, setUsername] = useState('')
   const { logout } = useAuth()
+  const { username } = useAuth()
 
   const handleOpenClose = () => {
     setIsOpen(!isOpen)
   }
-
-  useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const token = localStorage.getItem('token')
-
-        if (!token) {
-          return
-        }
-
-        const response = await axios.get('/api/user/getuserinfo', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        const user = response.data.user
-        setUsername(user.username)
-      } catch (err) {
-        alert(err)
-        console.error(err)
-      }
-    }
-    getUserData()
-  }, [])
 
   return (
     <>
