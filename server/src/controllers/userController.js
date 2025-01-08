@@ -36,7 +36,7 @@ class UserController {
 
     const verificationToken = jwt.sign({ id: data._id }, process.env.jwtsecret, { expiresIn: '1d' })
 
-    const verificationLink = `http://localhost:5000/api/user/verify-email?token=${verificationToken}`
+    const verificationLink = `${process.env.API_URL}api/user/verify-email?token=${verificationToken}`
 
     await sendVerificationEmail(email, username, verificationLink)
     res.status(201).json({

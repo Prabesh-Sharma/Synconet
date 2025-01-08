@@ -59,10 +59,14 @@ const Navigation = () => {
             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full" />
 
             <div
-              className={`flex absolute left-12 text-neutral-100 transition-opacity duration-300 ${
-                isOpen ? 'opacity-100' : 'opacity-0'
+              className={`absolute left-14 text-neutral-100 whitespace-nowrap transition-all ease-in-out ${
+                isOpen
+                  ? 'opacity-100 translate-x-0'
+                  : 'opacity-0 -translate-x-5'
               }`}
-              style={{ visibility: isOpen ? 'visible' : 'hidden' }}
+              style={{
+                visibility: isOpen ? 'visible' : 'hidden',
+              }}
             >
               {username}
             </div>

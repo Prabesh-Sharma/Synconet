@@ -8,7 +8,7 @@ const Card = ({ recomms }) => {
 
   return (
     <>
-      <div className="flex flex-wrap gap-2 m-4">
+      <div className="flex flex-wrap gap-2 m-4 items-center justify-center">
         {recomms.map((recomm, i) => (
           <div
             key={i}

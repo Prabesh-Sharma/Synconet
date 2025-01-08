@@ -28,7 +28,6 @@ const Form = ({
       ...data,
       [name]: value,
     })
-    console.log(data)
   }
 
   const handleSubmit = (e) => {
@@ -147,5 +146,4 @@ const Form = ({
     </>
   )
 }
-
 export default Form
