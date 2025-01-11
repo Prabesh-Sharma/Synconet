@@ -43,19 +43,27 @@ export const AuthProvider = ({ children }) => {
         Authorization: `Bearer ${token}`,
       },
     })
-
     if (response.status === 200) {
       setIsAuthenticated(true)
     }
     return response.data.user.username
   }
 
-  const { data: username, error } = useQuery({
+  const { data: username, error: autherr } = useQuery({
     queryKey: ['login'],
     queryFn: validateToken,
-    staleTime: 10 * 1000,
     enabled: !!token,
+    refetchInterval: 10000, // Refetch every 30 seconds
+    retry: false, // Don't retry on error
+    refetchOnWindowFocus: true, // Refetch when window regains focus
+    staleTime: 0, // Always consider data stale
   })
+
+  useEffect(() => {
+    if (autherr) {
+      logout()
+    }
+  }, [autherr])
 
   return (
     <AuthContext.Provider value={{ login, logout, isAuthenticated, username }}>
