@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Form from './form/Form'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext.jsx'
@@ -8,6 +8,13 @@ const Login = () => {
   const { login } = useAuth()
   const [errorMessage, setErrorMessage] = useState('')
   const [message, setMessage] = useState('')
+  const { isAuthenticated } = useAuth()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/home/dashboard')
+    }
+  })
 
   const handleLogin = async (data) => {
     try {
@@ -30,14 +37,16 @@ const Login = () => {
 
   return (
     <>
-      <Form
-        type="login"
-        onSubmit={handleLogin}
-        errorMessage={errorMessage}
-        setErrorMessage={setErrorMessage}
-        setMessage={setMessage}
-        message={message}
-      />
+      {!isAuthenticated && (
+        <Form
+          type="login"
+          onSubmit={handleLogin}
+          errorMessage={errorMessage}
+          setErrorMessage={setErrorMessage}
+          setMessage={setMessage}
+          message={message}
+        />
+      )}
     </>
   )
 }

@@ -23,7 +23,7 @@ const InterestPage = () => {
     queryKey: ['interest'],
     queryFn: getInterest,
     enabled: !!token,
-    staleTime: 10 * 1000,
+    staleTime: 60 * 1000,
     cacheTime: 60 * 1000,
   })
 

@@ -7,6 +7,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useSocket } from '../../../context/SocketContext'
 import { Mic, MicOff, Video, VideoOff } from 'lucide-react'
+import { useAuth } from '../../../context/AuthContext'
 
 const ICE_SERVERS = {
   iceServers: [
@@ -21,15 +22,15 @@ const VideoChat = () => {
   const socket = useSocket()
   const pcRef = useRef(new Map()) // participantId --> pc
   const [peers, setPeers] = useState(new Map()) // participantId --> MediaStream
-  const [userName, setUserName] = useState(new Map())
   const [isAudioEnabled, setIsAudioEnabled] = useState(true)
   const [isVideoEnabled, setIsVideoEnabled] = useState(true)
+  const { username } = useAuth()
 
   const getLocalMediaStream = async () => {
     try {
       /*gets local MediaStream*/
       const mediaStream = await navigator.mediaDevices.getUserMedia({
-        audio: false,
+        audio: true,
         video: true,
       })
       localStreamRef.current = mediaStream
@@ -41,7 +42,7 @@ const VideoChat = () => {
 
   /*useCallback used to maintain same reference across re-renders*/
   const createPeerConnection = useCallback((participantId) => {
-    const pc = new RTCPeerConnection()
+    const pc = new RTCPeerConnection(ICE_SERVERS)
     pcRef.current.set(participantId, pc)
 
     /* .getTracks returns an array of tracks for eg: videoTrack and audioTrack */
@@ -55,7 +56,7 @@ const VideoChat = () => {
     //stream.getAudioTracks() or stream.getVideoTracks() can also be called
     pc.ontrack = (e) => {
       const stream = e.streams[0]
-      //!!!solved---->returned new map after adding to prev to trigger re-render
+      //returned new map after adding to prev to trigger re-render
       setPeers((prev) => {
         return new Map(prev.set(participantId, stream))
       })
@@ -127,24 +128,94 @@ const VideoChat = () => {
         await pc.addIceCandidate(candidate)
       }
     })
+
+    socket.on('user-left', (participantId) => {
+      cleanupPeerConnection(participantId)
+    })
+
+    return () => {
+      socket.off('answer')
+      socket.off('offer')
+      socket.off('ice - candidate')
+      socket.off('new-user-joined')
+      socket.off('user-left')
+    }
   }
+
+  const cleanupPeerConnection = useCallback((participantId) => {
+    const pc = pcRef.current.get(participantId)
+    if (pc) {
+      pc.close()
+      pcRef.current.delete(participantId)
+      setPeers((prev) => {
+        const newPeers = new Map(prev)
+        newPeers.delete(participantId)
+        return newPeers
+      })
+    }
+  }, [])
 
   useEffect(() => {
     setRoomId(1)
+    return () => {
+      // Stop all local tracks
+      if (localStreamRef.current) {
+        localStreamRef.current.getTracks().forEach((track) => track.stop())
+      }
+
+      // Close all peer connections
+      pcRef.current.forEach((pc, participantId) => {
+        cleanupPeerConnection(participantId)
+      })
+
+      // Clear all state
+      setPeers(new Map())
+    }
   }, [])
 
   useEffect(() => {
     if (roomId) {
-      handleJoin()
+      const cleanSocketEvents = handleJoin()
+      return () => {
+        cleanSocketEvents?.()
+      }
     }
   }, [roomId])
 
   const handleVideo = () => {
-    setIsVideoEnabled(!isVideoEnabled)
+    if (localStreamRef.current) {
+      const videoTrack = localStreamRef.current.getVideoTracks()[0]
+      if (videoTrack) {
+        videoTrack.enabled = !isVideoEnabled
+        setIsVideoEnabled(!isVideoEnabled)
+
+        // Update the track for all peer connections
+        pcRef.current.forEach((pc) => {
+          const sender = pc.getSenders().find((s) => s.track?.kind === 'video')
+          if (sender) {
+            sender.track.enabled = !isVideoEnabled
+          }
+        })
+      }
+    }
   }
 
   const handleAudio = () => {
-    setIsAudioEnabled(!isAudioEnabled)
+    if (localStreamRef.current) {
+      const audioTrack = localStreamRef.current.getAudioTracks()[0]
+      if (audioTrack) {
+        audioTrack.enabled = !isAudioEnabled
+        setIsAudioEnabled(!isAudioEnabled)
+
+        // Update the track for all peer connections
+        pcRef.current.forEach((pc) => {
+          const sender = pc.getSenders().find((s) => s.track?.kind === 'audio')
+          if (sender) {
+            sender.track.enabled = !isAudioEnabled
+          }
+        })
+      }
+    }
   }
 
   return (
@@ -158,6 +229,7 @@ const VideoChat = () => {
                   if (video) video.srcObject = localStreamRef.current
                 }}
                 autoPlay
+                muted={true}
                 playsInline
                 className="w-full scale-x-[-1] rounded-md"
               />
@@ -173,7 +245,7 @@ const VideoChat = () => {
                 playsInline
                 autoPlay
                 ref={(video) => {
-                  video.srcObject = stream || localStreamRef.current
+                  if (video) video.srcObject = stream
                 }}
               />
               <span className="bg-black opacity-50 absolute bottom-2 right-2 text-white p-1 rounded-md">

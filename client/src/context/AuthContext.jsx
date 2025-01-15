@@ -53,10 +53,10 @@ export const AuthProvider = ({ children }) => {
     queryKey: ['login'],
     queryFn: validateToken,
     enabled: !!token,
-    refetchInterval: 10000, // Refetch every 30 seconds
-    retry: false, // Don't retry on error
-    refetchOnWindowFocus: true, // Refetch when window regains focus
-    staleTime: 0, // Always consider data stale
+    refetchInterval: 10000,
+    retry: false,
+    refetchOnWindowFocus: true,
+    staleTime: 0,
   })
 
   useEffect(() => {

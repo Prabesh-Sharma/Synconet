@@ -7,6 +7,9 @@ class UserController {
   async register(req, res) {
     const { email, password, username } = req.body
 
+    const test = req.body
+    console.log(test)
+
     if (!email || !username || !password) {
       return res.status(400).json({
         error: 'bad request',
