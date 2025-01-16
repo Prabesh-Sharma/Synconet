@@ -21,7 +21,7 @@ const VideoChat = () => {
   const [roomId, setRoomId] = useState('')
   const socket = useSocket()
   const pcRef = useRef(new Map()) // participantId --> pc
-  const [peers, setPeers] = useState(new Map()) // participantId --> MediaStream
+  const [peers, setPeers] = useState(new Map()) // participantId --> {stream,MediaStream}
   const [isAudioEnabled, setIsAudioEnabled] = useState(true)
   const [isVideoEnabled, setIsVideoEnabled] = useState(true)
   const { username } = useAuth()
@@ -41,7 +41,7 @@ const VideoChat = () => {
   }
 
   /*useCallback used to maintain same reference across re-renders*/
-  const createPeerConnection = useCallback((participantId) => {
+  const createPeerConnection = useCallback((participantId, user) => {
     const pc = new RTCPeerConnection(ICE_SERVERS)
     pcRef.current.set(participantId, pc)
 
@@ -58,7 +58,7 @@ const VideoChat = () => {
       const stream = e.streams[0]
       //returned new map after adding to prev to trigger re-render
       setPeers((prev) => {
-        return new Map(prev.set(participantId, stream))
+        return new Map(prev.set(participantId, { stream, usr: user }))
       })
     }
 
@@ -82,24 +82,25 @@ const VideoChat = () => {
     const localMediaStream = await getLocalMediaStream()
     if (!localMediaStream) return
 
-    socket.emit('join-room', roomId) //socket.join() in the backend for socket.id gets called
+    socket.emit('join-room', { roomId, username }) //socket.join() in the backend for socket.id gets called
 
     socket.on('participants', async (participants) => {
-      for (const participantId of participants) {
-        const pc = createPeerConnection(participantId) //peer-connection created by existing users or socketIds in room
+      for (const participant of participants) {
+        const pc = createPeerConnection(participant.id, participant.username) //peer-connection created by existing users or socketIds in room
+        console.log(participant.username)
 
         //each peer existing creates an offer
         const offer = await pc.createOffer()
         await pc.setLocalDescription(offer)
 
         //emit offer to newly joined peer
-        socket.emit('offer', { to: participantId, offer })
+        socket.emit('offer', { to: participant.id, offer })
       }
     })
 
     //existing user sets up a new connection for the newly joined user
-    socket.on('new-user-joined', (id) => {
-      createPeerConnection(id)
+    socket.on('new-user-joined', ({ id, username }) => {
+      createPeerConnection(id, username)
     })
 
     //the peers one by one get an offer from the newly joined user
@@ -156,7 +157,9 @@ const VideoChat = () => {
   }, [])
 
   useEffect(() => {
-    setRoomId(1)
+    if (username) {
+      setRoomId(1)
+    }
     return () => {
       // Stop all local tracks
       if (localStreamRef.current) {
@@ -171,7 +174,7 @@ const VideoChat = () => {
       // Clear all state
       setPeers(new Map())
     }
-  }, [])
+  }, [username])
 
   useEffect(() => {
     if (roomId) {
@@ -180,7 +183,7 @@ const VideoChat = () => {
         cleanSocketEvents?.()
       }
     }
-  }, [roomId])
+  }, [roomId, username])
 
   const handleVideo = () => {
     if (localStreamRef.current) {
@@ -221,7 +224,7 @@ const VideoChat = () => {
   return (
     <>
       <div className="relative w-full h-screen">
-        <div className="grid grid-cols-4 gap-4">
+        <div className="flex gap-4">
           {localStreamRef.current && (
             <div className="relative">
               <video
@@ -234,22 +237,22 @@ const VideoChat = () => {
                 className="w-full scale-x-[-1] rounded-md"
               />
               <span className="bg-black opacity-50 absolute bottom-2 right-2 text-white p-1 rounded-md">
-                you
+                {username}(you)
               </span>
             </div>
           )}
-          {Array.from(peers.entries()).map(([peerId, stream]) => (
+          {Array.from(peers.entries()).map(([peerId, peerData]) => (
             <div key={peerId} className="relative p-2">
               <video
                 className="w-full scale-x-[-1] rounded-md"
                 playsInline
                 autoPlay
                 ref={(video) => {
-                  if (video) video.srcObject = stream
+                  if (video) video.srcObject = peerData.stream
                 }}
               />
               <span className="bg-black opacity-50 absolute bottom-2 right-2 text-white p-1 rounded-md">
-                {peerId.slice(0, 5)}
+                {peerData.usr}
               </span>
             </div>
           ))}

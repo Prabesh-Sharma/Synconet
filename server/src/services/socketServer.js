@@ -13,11 +13,11 @@ const initializeSocket = (httpServer) => {
   const removeParticipantFromRoom = (socketId, roomId) => {
     const people = room.get(roomId)
     if (people) {
-      people.filter((id) => id !== socketId)
-      if (people.length === 0) {
+      const filtered = people.filter((participant) => participant.id !== socketId)
+      if (filtered.length === 0) {
         room.delete(roomId)
       } else {
-        room.set(roomId, people)
+        room.set(roomId, filtered)
       }
     }
   }
@@ -28,19 +28,20 @@ const initializeSocket = (httpServer) => {
       console.log(message)
     })
 
-    socket.on('join-room', (roomId) => {
+    socket.on('join-room', ({ roomId, username }) => {
       socket.join(roomId)
 
       const participants = room.get(roomId) || []
       socket.emit('participants', participants)
 
-      if (!participants.includes(socket.id)) {
-        participants.push(socket.id)
+      if (!participants.map((p) => p.id).includes(socket.id)) {
+        participants.push({ id: socket.id, username })
       }
 
       room.set(roomId, participants)
-      socket.to(roomId).emit('new-user-joined', socket.id)
+      socket.to(roomId).emit('new-user-joined', { id: socket.id, username })
       socket.roomId = roomId
+      console.log(room)
     })
 
     socket.on('offer', ({ to, offer }) => {
@@ -77,14 +78,14 @@ const initializeSocket = (httpServer) => {
 
   return () => {
     io.close()
-    room.clear
+    room.clear()
   }
 }
 
 export default initializeSocket
 
 /*
-	room --> participant
+	room --> {participantId,username}
 	participant --> socketid
 	rooms maps to room which is a set of participant(socket.id)
 	get ice-candidates and emit
