@@ -18,6 +18,7 @@ export const UploadProfilePicture = async (req, res, next) => {
       })
     }
   }
+  next()
   return res.status(500).json({
     status: 'fail',
     message: 'didnot uploaded any files',
