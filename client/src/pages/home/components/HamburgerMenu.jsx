@@ -9,7 +9,7 @@ import { useAuth } from '../../../context/AuthContext'
 
 import React, { useState } from 'react'
 import NavigationLink from './NavigationLink'
-import { CogIcon, XIcon } from 'lucide-react'
+import { CircleUserRound, XIcon } from 'lucide-react'
 
 const HamburgerMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -57,8 +57,8 @@ const HamburgerMenu = () => {
           <NavigationLink name="Network" isOpen={true} to="/home/network">
             <UserGroupIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
           </NavigationLink>
-          <NavigationLink name="settings" isOpen={true} to="/home/settings">
-            <CogIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+          <NavigationLink name="Profile" isOpen={true} to="/home/profile">
+            <CircleUserRound className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
           </NavigationLink>
           <div onClick={logout}>
             <NavigationLink name="Logout" isOpen={true} to="/login">

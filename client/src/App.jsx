@@ -3,11 +3,11 @@ import Home from './pages/home/Home'
 import Dashboard from './pages/home/pages/Dashboard'
 import Events from './pages/home/pages/Events'
 import Network from './pages/home/pages/Network'
+import Profile from './pages/home/pages/Profile'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './pages/auth/ProtectedRoute'
-import Settings from './pages/home/pages/Settings'
 import Inbox from './pages/home/pages/Inbox'
 import VideoChat from './pages/home/pages/VideoChat'
 import { SocketProvider } from './context/SocketContext'
@@ -45,7 +45,7 @@ const App = () => {
                   <Route path="inbox" element={<Inbox />} />
                   <Route path="events" element={<Events />} />
                   <Route path="network" element={<Network />} />
-                  <Route path="settings" element={<Settings />} />
+                  <Route path="profile" element={<Profile />} />
                 </Route>
                 <Route
                   path="/home/events/event/:id"

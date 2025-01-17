@@ -46,10 +46,10 @@ export const AuthProvider = ({ children }) => {
     if (response.status === 200) {
       setIsAuthenticated(true)
     }
-    return response.data.user.username
+    return response.data.user
   }
 
-  const { data: username, error: autherr } = useQuery({
+  const { data: userData, error: autherr } = useQuery({
     queryKey: ['login'],
     queryFn: validateToken,
     enabled: !!token,
@@ -59,6 +59,9 @@ export const AuthProvider = ({ children }) => {
     staleTime: 0,
   })
 
+  const username = userData?.username
+  const email = userData?.email
+
   useEffect(() => {
     if (autherr) {
       logout()
@@ -66,7 +69,9 @@ export const AuthProvider = ({ children }) => {
   }, [autherr])
 
   return (
-    <AuthContext.Provider value={{ login, logout, isAuthenticated, username }}>
+    <AuthContext.Provider
+      value={{ login, logout, isAuthenticated, username, email }}
+    >
       {children}
     </AuthContext.Provider>
   )

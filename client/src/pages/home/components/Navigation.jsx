@@ -6,10 +6,10 @@ import {
   CalendarDateRangeIcon,
   UserGroupIcon,
   ArrowLeftStartOnRectangleIcon,
-  CogIcon,
   InboxArrowDownIcon,
 } from '@heroicons/react/24/outline'
 import { useAuth } from '../../../context/AuthContext.jsx'
+import { CircleUserRound } from 'lucide-react'
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -66,8 +66,8 @@ const Navigation = () => {
           </div>
         </div>
         <div className="flex flex-col gap-3">
-          <NavigationLink name="settings" isOpen={isOpen} to="/home/settings">
-            <CogIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+          <NavigationLink name="Profile" isOpen={isOpen} to="/home/profile">
+            <CircleUserRound className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
           </NavigationLink>
           <div onClick={logout}>
             <NavigationLink name="Logout" isOpen={isOpen} to="/login">

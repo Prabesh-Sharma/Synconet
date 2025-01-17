@@ -12,7 +12,7 @@ const Events = () => {
       <Layout.Main>
         <div className="border-neutral-500/50 h-60 w-full bg-neutral-800/20 rounded border p-4">
           <button
-            className="bg-slate-200 rounded-lg p-1 hover:bg-slate-400"
+            className="bg-slate-200 rounded-lg p-1 hover:bg-slate-400 text-black"
             onClick={() => navigate('/home/events/event/3')}
           >
             click me
