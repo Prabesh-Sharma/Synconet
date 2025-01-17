@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
+    profilePicture: {
+      type: String,
+      default: 'https://i.sstatic.net/l60Hf.png',
+    },
   },
   {
     timestamps: true,
