@@ -6,7 +6,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useSocket } from '../../../context/SocketContext'
-import { Mic, MicOff, Video, VideoOff } from 'lucide-react'
+import { Mic, MicOff, PhoneMissed, Video, VideoOff } from 'lucide-react'
 import { useAuth } from '../../../context/AuthContext'
 
 const ICE_SERVERS = {
@@ -224,7 +224,7 @@ const VideoChat = () => {
   return (
     <>
       <div className="relative w-full h-screen">
-        <div className="flex gap-4">
+        <div className="grid grid-cols-4 gap-4">
           {localStreamRef.current && (
             <div className="relative">
               <video
@@ -259,12 +259,27 @@ const VideoChat = () => {
         </div>
       </div>
       <div className="ml-[50%] absolute bottom-4 text-white">
-        <div className="grid grid-cols-2 gap-3 justify-between cursor-pointer">
-          <div onClick={handleAudio}>
+        <div className="flex gap-3 justify-between cursor-pointer">
+          <div onClick={handleAudio} className="relative group">
             {isAudioEnabled ? <Mic /> : <MicOff />}
+            <div className="cursor-default absolute px-2 py-1 bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity bottom-8 right-[1px]">
+              {isAudioEnabled ? 'mute' : 'unmute'}
+            </div>
           </div>
-          <div onClick={handleVideo}>
+          <div onClick={handleVideo} className="group relative">
             {isVideoEnabled ? <Video /> : <VideoOff />}
+            <div className="cursor-default absolute px-2 py-1 bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity bottom-8 right-[1px]">
+              {isVideoEnabled ? 'Turn Video Off' : 'Turn Video On'}
+            </div>
+          </div>
+          <div
+            className="group relative"
+            onClick={() => (window.location.href = '/home/events')}
+          >
+            <PhoneMissed />
+            <div className="cursor-default absolute px-2 py-1 bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity bottom-8 right-[1px]">
+              End Call
+            </div>
           </div>
         </div>
       </div>

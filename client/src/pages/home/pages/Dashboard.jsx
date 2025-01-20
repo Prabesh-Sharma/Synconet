@@ -10,6 +10,7 @@ const Dashboard = () => {
         </Layout.Header>
         <Layout.Main>
           <InterestPage />
+          <div className="p-4">main</div>
         </Layout.Main>
       </Layout>
     </>

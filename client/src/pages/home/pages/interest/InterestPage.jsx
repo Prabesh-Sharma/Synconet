@@ -23,8 +23,9 @@ const InterestPage = () => {
     queryKey: ['interest'],
     queryFn: getInterest,
     enabled: !!token,
-    staleTime: 60 * 1000,
-    cacheTime: 60 * 1000,
+    staleTime: 0,
+    cacheTime: 0,
+    refetchInterval: 500,
   })
 
   if (error) {

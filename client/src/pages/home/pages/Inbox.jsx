@@ -8,7 +8,7 @@ const Inbox = () => {
         <h1 className="text-4xl text-neutral-200">Inbox</h1>
       </Layout.Header>
       <Layout.Main>
-        <div className="text-xl text-neutral-200">main content is here</div>
+        <div className="p-4">main</div>
       </Layout.Main>
     </Layout>
   )

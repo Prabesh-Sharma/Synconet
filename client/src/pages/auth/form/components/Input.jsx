@@ -13,7 +13,7 @@ const Input = ({ placeholder, id, name, onChange, type, value }) => {
   const inputType = type === 'password' && isPasswordVisible ? 'text' : type
 
   return (
-    <div className="relative mt-10">
+    <div className="relative mt-6">
       <input
         type={inputType}
         value={value}

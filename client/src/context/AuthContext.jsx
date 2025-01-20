@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
     queryKey: ['login'],
     queryFn: validateToken,
     enabled: !!token,
-    refetchInterval: 10000,
+    refetchInterval: 2000,
     retry: false,
     refetchOnWindowFocus: true,
     staleTime: 0,
@@ -61,6 +61,7 @@ export const AuthProvider = ({ children }) => {
 
   const username = userData?.username
   const email = userData?.email
+  const profilePic = userData?.profilePic
 
   useEffect(() => {
     if (autherr) {
@@ -70,7 +71,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ login, logout, isAuthenticated, username, email }}
+      value={{ login, logout, isAuthenticated, username, email, profilePic }}
     >
       {children}
     </AuthContext.Provider>

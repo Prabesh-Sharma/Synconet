@@ -14,7 +14,7 @@ import { CircleUserRound } from 'lucide-react'
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false)
   const { logout } = useAuth()
-  const { username } = useAuth()
+  const { username, profilePic } = useAuth()
 
   const handleOpenClose = () => {
     setIsOpen(!isOpen)
@@ -31,7 +31,11 @@ const Navigation = () => {
       >
         <div className="flex flex-col gap-14">
           <div className="relative flex flex-row w-full justify-between place-items-center">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full" />
+            {profilePic ? (
+              <img src={profilePic} className="size-10 rounded-full" />
+            ) : (
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full" />
+            )}
 
             <div
               className={`absolute left-14 text-neutral-100 whitespace-nowrap transition-all ease-in-out ${
