@@ -8,6 +8,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useSocket } from '../../../context/SocketContext'
 import { Mic, MicOff, PhoneMissed, Video, VideoOff } from 'lucide-react'
 import { useAuth } from '../../../context/AuthContext'
+import { useParams } from 'react-router-dom'
 
 const ICE_SERVERS = {
   iceServers: [
@@ -18,6 +19,7 @@ const ICE_SERVERS = {
 
 const VideoChat = () => {
   const localStreamRef = useRef()
+  const { id } = useParams()
   const [roomId, setRoomId] = useState('')
   const socket = useSocket()
   const pcRef = useRef(new Map()) // participantId --> pc
@@ -158,8 +160,9 @@ const VideoChat = () => {
 
   useEffect(() => {
     if (username) {
-      setRoomId(1)
+      setRoomId(id)
     }
+    console.log(id)
     return () => {
       // Stop all local tracks
       if (localStreamRef.current) {

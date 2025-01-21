@@ -22,7 +22,7 @@ import {
   Trophy,
 } from 'lucide-react'
 
-import InterestButton from '../../components/InterestButton'
+import ClickableButton from '../../components/ClickableButton'
 import axios from '../../../../../axiosConfig'
 
 const Interest = ({ handleInterestUpdates }) => {
@@ -75,57 +75,57 @@ const Interest = ({ handleInterestUpdates }) => {
           Choose Your Interests
         </div>
         <div className="grid grid-cols-2 md:flex md:flex-row md:flex-wrap gap-3 md:gap-6 mt-4">
-          <InterestButton type="Music" handleClick={handleClick}>
+          <ClickableButton type="Music" handleClick={handleClick}>
             <MusicalNoteIcon className="h-5 w-5" />
-          </InterestButton>
-          <InterestButton type="Science" handleClick={handleClick}>
+          </ClickableButton>
+          <ClickableButton type="Science" handleClick={handleClick}>
             <BeakerIcon className="h-5 w-5" />
-          </InterestButton>
-          <InterestButton type="Reading" handleClick={handleClick}>
+          </ClickableButton>
+          <ClickableButton type="Reading" handleClick={handleClick}>
             <BookOpenIcon className="h-5 w-5 text-inherit" />
-          </InterestButton>
-          <InterestButton type="Photography" handleClick={handleClick}>
+          </ClickableButton>
+          <ClickableButton type="Photography" handleClick={handleClick}>
             <CameraIcon className="h-5 w-5 text-inherit" />
-          </InterestButton>
-          <InterestButton type="Sports" handleClick={handleClick}>
+          </ClickableButton>
+          <ClickableButton type="Sports" handleClick={handleClick}>
             <Trophy className="h-5 w-5 text-inherit" />
-          </InterestButton>
-          <InterestButton type="Space" handleClick={handleClick}>
+          </ClickableButton>
+          <ClickableButton type="Space" handleClick={handleClick}>
             <Telescope className="h-5 w-5 text-inherit" />
-          </InterestButton>
-          <InterestButton type="Travelling" handleClick={handleClick}>
+          </ClickableButton>
+          <ClickableButton type="Travelling" handleClick={handleClick}>
             <PlaneTakeoff className="h-5 w-5 text-inherit" />
-          </InterestButton>
-          <InterestButton type="Programming" handleClick={handleClick}>
+          </ClickableButton>
+          <ClickableButton type="Programming" handleClick={handleClick}>
             <CodeBracketIcon className="h-5 w-5 text-inherit" />
-          </InterestButton>
-          <InterestButton type="Art" handleClick={handleClick}>
+          </ClickableButton>
+          <ClickableButton type="Art" handleClick={handleClick}>
             <Palette className="h-5 w-5 text-inherit" />
-          </InterestButton>
-          <InterestButton type="Mathematics" handleClick={handleClick}>
+          </ClickableButton>
+          <ClickableButton type="Mathematics" handleClick={handleClick}>
             <Pi className="h-5 w-5 text-inherit" />
-          </InterestButton>
-          <InterestButton type="Writing" handleClick={handleClick}>
+          </ClickableButton>
+          <ClickableButton type="Writing" handleClick={handleClick}>
             <PencilSquareIcon className="h-5 w-5 text-inherit" />
-          </InterestButton>
-          <InterestButton type="Fitness" handleClick={handleClick}>
+          </ClickableButton>
+          <ClickableButton type="Fitness" handleClick={handleClick}>
             <Dumbbell className="h-5 w-5 text-inherit" />
-          </InterestButton>
-          <InterestButton type="Technology" handleClick={handleClick}>
+          </ClickableButton>
+          <ClickableButton type="Technology" handleClick={handleClick}>
             <CpuChipIcon className="h-5 w-5 text-inherit" />
-          </InterestButton>
-          <InterestButton type="Movies" handleClick={handleClick}>
+          </ClickableButton>
+          <ClickableButton type="Movies" handleClick={handleClick}>
             <Clapperboard className="h-5 w-5 text-inherit" />
-          </InterestButton>
-          <InterestButton type="Gaming" handleClick={handleClick}>
+          </ClickableButton>
+          <ClickableButton type="Gaming" handleClick={handleClick}>
             <Gamepad2 className="h-5 w-5 text-inherit" />
-          </InterestButton>
-          <InterestButton type="Cooking" handleClick={handleClick}>
+          </ClickableButton>
+          <ClickableButton type="Cooking" handleClick={handleClick}>
             <CookingPot className="h-5 w-5 text-inherit" />
-          </InterestButton>
-          <InterestButton type="Nature" handleClick={handleClick}>
+          </ClickableButton>
+          <ClickableButton type="Nature" handleClick={handleClick}>
             <Trees className="h-5 w-5 text-inherit" />
-          </InterestButton>
+          </ClickableButton>
         </div>
         <button
           className="bg-slate-50 px-2 py-1 rounded-md text-blue-950 

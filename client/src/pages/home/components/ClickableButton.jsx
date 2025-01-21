@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const InterestButton = ({ children, type, handleClick }) => {
+const ClickableButton = ({ children, type, handleClick }) => {
   const [isActive, setIsActive] = useState(false)
 
   const toggleFocus = () => {
@@ -27,4 +27,4 @@ const InterestButton = ({ children, type, handleClick }) => {
   )
 }
 
-export default InterestButton
+export default ClickableButton

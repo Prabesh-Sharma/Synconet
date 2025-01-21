@@ -12,6 +12,7 @@ import Inbox from './pages/home/pages/Inbox'
 import VideoChat from './pages/home/pages/VideoChat'
 import { SocketProvider } from './context/SocketContext'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import AddEvent from './pages/home/pages/event/AddEvent'
 
 const queryClient = new QueryClient()
 
@@ -55,6 +56,7 @@ const App = () => {
                     </ProtectedRoute>
                   }
                 />
+                <Route path="/home/events/addevent" element={<AddEvent />} />
               </Routes>
             </BrowserRouter>
           </AuthProvider>
