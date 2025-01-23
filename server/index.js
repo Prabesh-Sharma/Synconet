@@ -6,6 +6,7 @@ import { config } from 'dotenv'
 import userRoute from './src/routes/userRoute.js'
 import connection from './src/database/database.js'
 import interestRoute from './src/routes/interestRoute.js'
+import eventRoute from './src/routes/eventsRoute.js'
 import http from 'http'
 import initializeSocket from './src/services/socketServer.js'
 
@@ -35,6 +36,7 @@ app.get('/', (_, res) => {
 
 app.use('/api/user', userRoute)
 app.use('/api/interest', interestRoute)
+app.use('/api/events', eventRoute)
 
 httpServer.listen(process.env.PORT, '0.0.0.0', () => {
   console.log(`the server has started on port ${process.env.PORT}`)

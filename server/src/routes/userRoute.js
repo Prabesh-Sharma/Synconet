@@ -11,6 +11,9 @@ router.route('/register').post(catchAsyncErr(userController.register))
 router.route('/login').post(catchAsyncErr(userController.login))
 router.route('/getuserinfo').get(protect, catchAsyncErr(userController.getUserInfo))
 router.route('/verify-email').get(catchAsyncErr(userController.verifyEmail))
-router.route('/uploadProfilePic').post(upload.single('profilePic'), UploadProfilePicture)
+router.route('/uploadProfilePic').post(protect, upload.single('profilePic'), UploadProfilePicture)
+router.route('/sendfriendreq').post(protect, catchAsyncErr(userController.sendFriendReq))
+router.route('/getfriendreq').get(protect, catchAsyncErr(userController.getFriendReq))
+router.route('/changepass').post(protect, catchAsyncErr(userController.changePassword))
 
 export default router

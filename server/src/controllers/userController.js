@@ -56,6 +56,7 @@ class UserController {
         error: 'bad request',
       })
     }
+
     const userData = await User.find({ email: email })
     if (userData.length === 0) {
       return res.status(404).json({
@@ -97,6 +98,7 @@ class UserController {
       user: {
         username: user.username,
         email: user.email,
+        profilePic: user.profilePicture,
       },
     })
   }
@@ -139,6 +141,35 @@ class UserController {
         error: 'Invalid or expired token',
       })
     }
+  }
+
+  async sendFriendReq(req, res) {
+    const user = await user.findById(req.user)
+  }
+
+  async getFriendReq(req, res) {
+    const user = await user.findById(req.user)
+  }
+
+  async changePassword(req, res) {
+    const user = await User.findById(req.user)
+    console.log(req.body)
+    const { oldPassword, newPassword } = req.body
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({ error: 'bad request' })
+    }
+    const isMatching = await bcrypt.compare(oldPassword, user.password)
+    console.log(isMatching)
+    if (isMatching) {
+      user.password = await bcrypt.hash(newPassword, 10)
+      user.save()
+      return res.status(200).json({
+        passwordMatches: isMatching,
+      })
+    }
+    return res.status(404).json({
+      error: 'old password doesnot match',
+    })
   }
 }
 
