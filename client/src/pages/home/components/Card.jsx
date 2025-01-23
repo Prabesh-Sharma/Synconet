@@ -1,16 +1,9 @@
-import { UserCheck, UserPlusIcon } from 'lucide-react'
-import React, { useState } from 'react'
+import { SendIcon } from 'lucide-react'
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Card = ({ recomms }) => {
-  const [requestedUsers, setRequestedUsers] = useState({})
-
-  const toggleReq = (index) => {
-    setRequestedUsers((prev) => ({
-      ...prev,
-      [index]: !prev[index],
-    }))
-  }
-
+  const navigate = useNavigate()
   return (
     <div className="flex flex-wrap gap-2 m-4 items-center justify-center">
       {recomms.map((recomm, i) => (
@@ -19,20 +12,13 @@ const Card = ({ recomms }) => {
           className="text-slate-300 mb-1 p-3 rounded relative flex flex-col bg-neutral-800/75"
         >
           <div className="relative group">
-            {requestedUsers[i] ? (
-              <UserCheck
-                className="size-8 absolute top-2 right-2 hover:text-white cursor-pointer"
-                onClick={() => toggleReq(i)}
-              />
-            ) : (
-              <UserPlusIcon
-                className="size-8 absolute top-2 right-2 hover:text-white cursor-pointer"
-                onClick={() => toggleReq(i)}
-              />
-            )}
+            <SendIcon
+              className="size-8 absolute top-2 right-2 hover:text-white cursor-pointer"
+              onClick={() => navigate('/home/inbox')}
+            />
             {/* Tooltip */}
             <div className="cursor-default absolute right-10 px-2 py-1 bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity">
-              {requestedUsers[i] ? 'Friend Request Sent' : 'Add Friend'}
+              Message
             </div>
           </div>
           <div className="flex flex-row">

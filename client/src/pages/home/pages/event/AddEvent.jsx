@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import Input from '../../../auth/form/components/Input'
 import {
   BookOpenIcon,
+  Briefcase,
   ChartPie,
+  Flame,
   Heart,
   PlayIcon,
   ShieldCheck,
@@ -25,6 +27,7 @@ import {
   MicrophoneIcon,
   PhotoIcon,
   RocketLaunchIcon,
+  Squares2X2Icon,
 } from '@heroicons/react/24/solid'
 
 const AddEvent = () => {
@@ -82,13 +85,13 @@ const AddEvent = () => {
             </div>
             <div className="grid grid-cols-2 md:flex md:flex-row md:flex-wrap gap-3 md:gap-6 mt-4">
               <ClickableButton type="General" handleClick={handleClick}>
-                <Heart className="h-5 w-5" />
+                <Squares2X2Icon className="h-5 w-5" />
               </ClickableButton>
               <ClickableButton type="Professional" handleClick={handleClick}>
-                <Users className="h-5 w-5" />
+                <Briefcase className="h-5 w-5" />
               </ClickableButton>
               <ClickableButton type="Popular" handleClick={handleClick}>
-                <Users className="h-5 w-5" />
+                <Flame className="h-5 w-5" />
               </ClickableButton>
             </div>
           </div>

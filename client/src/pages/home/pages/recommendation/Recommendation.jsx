@@ -27,8 +27,13 @@ const Recommendation = () => {
     cacheTime: 5 * 60 * 1000, //5 min
   })
 
+  // Sort data by username if data exists
+  const sortedData = data
+    ? [...data].sort((a, b) => a.username.localeCompare(b.username))
+    : []
+
   if (error) {
-    return <div className="text-white bg-red-800">error.message</div>
+    return <div className="text-white bg-red-800">{error.message}</div>
   }
 
   return (
@@ -36,7 +41,7 @@ const Recommendation = () => {
       <div className="text-white text-2xl font-semibold">
         People with matching interests
       </div>
-      <div>{!isLoading && <Card recomms={data} />}</div>
+      <div>{!isLoading && <Card recomms={sortedData} />}</div>
     </div>
   )
 }
