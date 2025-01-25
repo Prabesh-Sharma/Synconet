@@ -1,8 +1,14 @@
-import multer from 'multer'
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
 
-import path from 'path'
+// Resolve the path correctly to avoid double C:\
+const uploadPath = path.join(path.resolve(), 'uploads');
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname)
+// Ensure the uploads folder exists, create it if necessary
+fs.mkdirSync(uploadPath, { recursive: true });
 
-const upload = multer({ dest: path.join(__dirname, '../../uploads') })
-export default upload
+// Set up multer storage
+const upload = multer({ dest: uploadPath });
+
+export default upload;

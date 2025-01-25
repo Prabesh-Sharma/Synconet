@@ -7,7 +7,13 @@ import eventsController from '../controllers/eventsController.js'
 
 const router = Router()
 
+// Create event
 router.route('/set').post(protect, catchAsyncErr(eventsController.setEvents))
-router.route('/uploadEventPic').post(protect, upload.single('eventPic'), catchAsyncErr(UploadEventPicture))
+
+// Get scheduled events (future events)
+router.route('/scheduled').get(protect, catchAsyncErr(eventsController.getScheduledEvents))
+
+// Get attended events (past events)
+router.route('/attended').get(protect, catchAsyncErr(eventsController.getAttendedEvents))
 
 export default router

@@ -49,6 +49,11 @@ const eventSchema = new mongoose.Schema(
       default:
         'https://media.gettyimages.com/id/1094465614/photo/speaker-addressing-group-of-females.jpg?s=1024x1024&w=gi&k=20&c=Ui-OnxwLdSTw5F3VUc6sbVB-CuHVRX2EaVr4p2MnJ8Y=',
     },
+    type: {
+      type: String,
+      enum: ['scheduled', 'attended'],
+      default: 'scheduled', // Default to scheduled events
+    },
   },
   {
     timestamps: true,
