@@ -1,6 +1,10 @@
 import { useState } from 'react'
 
 const CategoryBtn = ({ children, type, handleClick, isActeeve }) => {
+  const toggleFocus = () => {
+    handleClick(type)
+  }
+
   return (
     <>
       <button
@@ -11,6 +15,7 @@ const CategoryBtn = ({ children, type, handleClick, isActeeve }) => {
                         : 'bg-neutral-500/20 border-neutral-400 hover:text-neutral-100 hover:border-neutral-100'
                     }
                     ${isActeeve ? 'text-blue-400' : 'text-neutral-400'}`}
+        onClick={toggleFocus}
       >
         {children}
         <div className="text-inherit">{type}</div>

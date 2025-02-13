@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { act, useState } from 'react'
 import Input from '../../../auth/form/components/Input'
 import EventLists from './events.json'
 import {
@@ -31,6 +31,7 @@ import {
   RocketLaunchIcon,
   Squares2X2Icon,
 } from '@heroicons/react/24/solid'
+import CategoryBtn from '../../components/CategoryButton'
 
 const AddEvent = () => {
   // console.log(EventLists.eventArray)
@@ -41,6 +42,7 @@ const AddEvent = () => {
     (e) => e.category === 'General'
   )
   console.log(generalIcons[0].tags)
+  const [activeCategory, setActiveCategory] = useState(1)
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -60,6 +62,13 @@ const AddEvent = () => {
     })
   }
   const handleToggling = (e) => {
+    if (e === 'General') {
+      setActiveCategory(1)
+    } else if (e === 'Popular') {
+      setActiveCategory(3)
+    } else {
+      setActiveCategory(2)
+    }
     setCategory(e)
     console.log(e)
     relevantIcons(e)
@@ -105,24 +114,27 @@ const AddEvent = () => {
               Choose a Category
             </div>
             <div className="grid grid-cols-2 md:flex md:flex-row md:flex-wrap gap-3 md:gap-6 mt-4">
-              <ClickableButton
+              <CategoryBtn
                 type="General"
                 handleClick={(e) => handleToggling('General')}
+                isActeeve={activeCategory === 1}
               >
                 <Squares2X2Icon className="h-5 w-5" />
-              </ClickableButton>
-              <ClickableButton
+              </CategoryBtn>
+              <CategoryBtn
                 type="Professional"
                 handleClick={(e) => handleToggling('Professional')}
+                isActeeve={activeCategory === 2}
               >
                 <Briefcase className="h-5 w-5" />
-              </ClickableButton>
-              <ClickableButton
+              </CategoryBtn>
+              <CategoryBtn
+                isActeeve={activeCategory === 3}
                 type="Popular"
                 handleClick={(e) => handleToggling('Popular')}
               >
                 <Flame className="h-5 w-5" />
-              </ClickableButton>
+              </CategoryBtn>
             </div>
           </div>
 
@@ -133,9 +145,11 @@ const AddEvent = () => {
             </div>
             <div className="grid grid-cols-2 md:flex md:flex-row md:flex-wrap gap-3 md:gap-6 mt-4">
               {icons.map((e) => (
-                <button className="h-100 w-100 bg-red-800" key={e.heroicons}>
-                  {e.heroicons}
-                </button>
+                <ClickableButton
+                  type={e.heroicons}
+                  key={e.heroicons}
+                  handleClick={() => console.log('hello')}
+                ></ClickableButton>
               ))}
             </div>
           </div>
