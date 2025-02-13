@@ -22,7 +22,6 @@ const Inbox = () => {
       console.log(e.target.value)
       setValue('')
     }
-
     // console.log(e.key)
   }
   const handleClickOnSent = () => {

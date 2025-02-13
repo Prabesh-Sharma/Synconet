@@ -1,0 +1,55 @@
+{
+    "eventArray": [
+      {
+        "category": "General",
+        "tags": [
+          { "tag": "networking", "heroicons": "UserGroupIcon", "lucide": "Users" },
+          { "tag": "workshop", "heroicons": "Cog6ToothIcon", "lucide": "Tool" },
+          { "tag": "conference", "heroicons": "PresentationChartBarIcon", "lucide": "Presentation" },
+          { "tag": "meetup", "heroicons": "ChatBubbleLeftEllipsisIcon", "lucide": "MessageSquare" },
+          { "tag": "webinar", "heroicons": "ComputerDesktopIcon", "lucide": "Monitor" },
+          { "tag": "training", "heroicons": "AcademicCapIcon", "lucide": "GraduationCap" },
+          { "tag": "hackathon", "heroicons": "CodeBracketIcon", "lucide": "Code" },
+          { "tag": "tech-talk", "heroicons": "MicrophoneIcon", "lucide": "Mic" },
+          { "tag": "panel-discussion", "heroicons": "ChatBubbleOvalLeftEllipsisIcon", "lucide": "MessageCircle" }
+        ]
+      },
+      {
+        "category": "Professional",
+        "tags": [
+          { "tag": "technology", "heroicons": "CpuChipIcon", "lucide": "Cpu" },
+          { "tag": "business", "heroicons": "BriefcaseIcon", "lucide": "Briefcase" },
+          { "tag": "marketing", "heroicons": "MegaphoneIcon", "lucide": "Speaker" },
+          { "tag": "finance", "heroicons": "BanknotesIcon", "lucide": "DollarSign" },
+          { "tag": "design", "heroicons": "PencilIcon", "lucide": "PenTool" },
+          { "tag": "leadership", "heroicons": "LightBulbIcon", "lucide": "Crown" },
+          { "tag": "entrepreneurship", "heroicons": "ChartBarIcon", "lucide": "TrendingUp" }
+        ]
+      },
+      {
+        "category": "Social",
+        "tags": [
+          { "tag": "community", "heroicons": "UsersIcon", "lucide": "People" },
+          { "tag": "charity", "heroicons": "HeartIcon", "lucide": "Heart" },
+          { "tag": "education", "heroicons": "BookOpenIcon", "lucide": "Book" },
+          { "tag": "wellness", "heroicons": "FaceSmileIcon", "lucide": "Smile" },
+          { "tag": "arts", "heroicons": "PhotoIcon", "lucide": "Brush" },
+          { "tag": "culture", "heroicons": "GlobeAltIcon", "lucide": "Globe" },
+          { "tag": "sports", "heroicons": "PlayIcon", "lucide": "Football" }
+        ]
+      },
+      {
+        "category": "Popular",
+        "tags": [
+          { "tag": "AI", "heroicons": "ChipIcon", "lucide": "Robot" },
+          { "tag": "blockchain", "heroicons": "CubeIcon", "lucide": "Layers" },
+          { "tag": "cybersecurity", "heroicons": "ShieldCheckIcon", "lucide": "Shield" },
+          { "tag": "startups", "heroicons": "RocketLaunchIcon", "lucide": "Rocket" },
+          { "tag": "cloud-computing", "heroicons": "CloudIcon", "lucide": "Cloud" },
+          { "tag": "web-development", "heroicons": "GlobeAltIcon", "lucide": "Code" },
+          { "tag": "data-science", "heroicons": "ChartPieIcon", "lucide": "PieChart" }
+        ]
+      }
+    ]
+  }
+  

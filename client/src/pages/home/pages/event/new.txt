@@ -9,6 +9,7 @@ training	AcademicCapIcon	GraduationCap
 hackathon	CodeBracketIcon	Code
 tech-talk	MicrophoneIcon	Mic
 panel-discussion	ChatBubbleOvalLeftEllipsisIcon	MessageCircle
+
 Professional Categories
 Tag	Icon Name (Heroicons)	Icon Name (Lucide)
 technology	CpuChipIcon	Cpu
@@ -18,6 +19,7 @@ finance	BanknotesIcon	DollarSign
 design	PencilIcon	PenTool
 leadership	LightBulbIcon	Crown
 entrepreneurship	ChartBarIcon	TrendingUp
+
 Social Categories
 Tag	Icon Name (Heroicons)	Icon Name (Lucide)
 community	UsersIcon	People

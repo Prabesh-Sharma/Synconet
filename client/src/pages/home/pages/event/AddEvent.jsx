@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import Input from '../../../auth/form/components/Input'
+import EventLists from './events.json'
 import {
   BookOpenIcon,
   Briefcase,
   ChartPie,
   Flame,
   Heart,
+  Icon,
   PlayIcon,
   ShieldCheck,
   TagIcon,
@@ -31,14 +33,22 @@ import {
 } from '@heroicons/react/24/solid'
 
 const AddEvent = () => {
+  // console.log(EventLists.eventArray)
   const [data, setData] = useState({})
-  const [tags, setTags] = useState([])
-  const [category, setCategory] = useState('')
+
+  const [category, setCategory] = useState('General')
+  const generalIcons = EventLists.eventArray.filter(
+    (e) => e.category === 'General'
+  )
+  console.log(generalIcons[0].tags)
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setData({ ...data, [name]: value })
   }
+
+  const [icons, setIcons] = useState(generalIcons[0].tags)
+  console.log('the icons are ' + icons)
 
   const handleClick = (type) => {
     setTags((prev) => {
@@ -48,6 +58,17 @@ const AddEvent = () => {
         return [...prev, type]
       }
     })
+  }
+  const handleToggling = (e) => {
+    setCategory(e)
+    console.log(e)
+    relevantIcons(e)
+  }
+  const relevantIcons = (category) => {
+    const tempIcons = EventLists.eventArray.filter(
+      (e) => e.category === category
+    )
+    setIcons(tempIcons[0].tags)
   }
 
   return (
@@ -84,13 +105,22 @@ const AddEvent = () => {
               Choose a Category
             </div>
             <div className="grid grid-cols-2 md:flex md:flex-row md:flex-wrap gap-3 md:gap-6 mt-4">
-              <ClickableButton type="General" handleClick={handleClick}>
+              <ClickableButton
+                type="General"
+                handleClick={(e) => handleToggling('General')}
+              >
                 <Squares2X2Icon className="h-5 w-5" />
               </ClickableButton>
-              <ClickableButton type="Professional" handleClick={handleClick}>
+              <ClickableButton
+                type="Professional"
+                handleClick={(e) => handleToggling('Professional')}
+              >
                 <Briefcase className="h-5 w-5" />
               </ClickableButton>
-              <ClickableButton type="Popular" handleClick={handleClick}>
+              <ClickableButton
+                type="Popular"
+                handleClick={(e) => handleToggling('Popular')}
+              >
                 <Flame className="h-5 w-5" />
               </ClickableButton>
             </div>
@@ -102,57 +132,11 @@ const AddEvent = () => {
               <TagIcon />
             </div>
             <div className="grid grid-cols-2 md:flex md:flex-row md:flex-wrap gap-3 md:gap-6 mt-4">
-              <ClickableButton type="Charity" handleClick={handleClick}>
-                <Heart className="h-5 w-5" />
-              </ClickableButton>
-              <ClickableButton type="Networking" handleClick={handleClick}>
-                <Users className="h-5 w-5" />
-              </ClickableButton>
-              <ClickableButton type="Education" handleClick={handleClick}>
-                <BookOpenIcon className="h-5 w-5 text-inherit" />
-              </ClickableButton>
-              <ClickableButton type="Wellness" handleClick={handleClick}>
-                <FaceSmileIcon className="h-5 w-5 text-inherit" />
-              </ClickableButton>
-              <ClickableButton type="Arts" handleClick={handleClick}>
-                <PhotoIcon className="h-5 w-5 text-inherit" />
-              </ClickableButton>
-              <ClickableButton type="Culture" handleClick={handleClick}>
-                <GlobeAltIcon className="h-5 w-5 text-inherit" />
-              </ClickableButton>
-              <ClickableButton type="Blockchain" handleClick={handleClick}>
-                <CubeIcon className="h-5 w-5 text-inherit" />
-              </ClickableButton>
-              <ClickableButton type="Cybersecurity" handleClick={handleClick}>
-                <ShieldCheck className="h-5 w-5 text-inherit" />
-              </ClickableButton>
-              <ClickableButton type="Startups" handleClick={handleClick}>
-                <RocketLaunchIcon className="h-5 w-5 text-inherit" />
-              </ClickableButton>
-              <ClickableButton type="Workshop" handleClick={handleClick}>
-                <Cog6ToothIcon className="h-5 w-5 text-inherit" />
-              </ClickableButton>
-              <ClickableButton type="Data-Science" handleClick={handleClick}>
-                <ChartPie className="h-5 w-5 text-inherit" />
-              </ClickableButton>
-              <ClickableButton type="Fitness" handleClick={handleClick}>
-                <ChatBubbleBottomCenterIcon className="h-5 w-5 text-inherit" />
-              </ClickableButton>
-              <ClickableButton type="Technology" handleClick={handleClick}>
-                <AcademicCapIcon className="h-5 w-5 text-inherit" />
-              </ClickableButton>
-              <ClickableButton type="Movies" handleClick={handleClick}>
-                <CodeBracketIcon className="h-5 w-5 text-inherit" />
-              </ClickableButton>
-              <ClickableButton type="Gaming" handleClick={handleClick}>
-                <MicrophoneIcon className="h-5 w-5 text-inherit" />
-              </ClickableButton>
-              <ClickableButton type="Cooking" handleClick={handleClick}>
-                <ChatBubbleOvalLeftEllipsisIcon className="h-5 w-5 text-inherit" />
-              </ClickableButton>
-              <ClickableButton type="Nature" handleClick={handleClick}>
-                <LightBulbIcon className="h-5 w-5 text-inherit" />
-              </ClickableButton>
+              {icons.map((e) => (
+                <button className="h-100 w-100 bg-red-800" key={e.heroicons}>
+                  {e.heroicons}
+                </button>
+              ))}
             </div>
           </div>
         </div>
