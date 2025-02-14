@@ -1,83 +1,111 @@
-import React, { act, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Input from '../../../auth/form/components/Input'
 import EventLists from './events.json'
-import {
-  BookOpenIcon,
-  Briefcase,
-  ChartPie,
-  Flame,
-  Heart,
-  Icon,
-  PlayIcon,
-  ShieldCheck,
-  TagIcon,
-  Users,
-} from 'lucide-react'
 import ClickableButton from '../../components/ClickableButton'
+import CategoryBtn from '../../components/CategoryButton'
 import {
   AcademicCapIcon,
-  ChatBubbleBottomCenterIcon,
   ChatBubbleOvalLeftEllipsisIcon,
   CodeBracketIcon,
   Cog6ToothIcon,
   ComputerDesktopIcon,
   CpuChipIcon,
-  CubeIcon,
-  FaceSmileIcon,
   GlobeAltIcon,
-  LightBulbIcon,
   MicrophoneIcon,
-  PhotoIcon,
+  UserGroupIcon,
+  ChartPieIcon,
+  ShieldCheckIcon,
   RocketLaunchIcon,
+  PlayIcon,
+  BriefcaseIcon,
+  HeartIcon,
+  BookOpenIcon,
+  FaceSmileIcon,
+  PhotoIcon,
+  TagIcon,
   Squares2X2Icon,
+  FireIcon,
 } from '@heroicons/react/24/solid'
-import CategoryBtn from '../../components/CategoryButton'
 
 const AddEvent = () => {
-  // console.log(EventLists.eventArray)
-  const [data, setData] = useState({})
+  const HeroIconsMap = {
+    UserGroupIcon,
+    Cog6ToothIcon,
+    ChatBubbleOvalLeftEllipsisIcon,
+    ComputerDesktopIcon,
+    AcademicCapIcon,
+    CodeBracketIcon,
+    MicrophoneIcon,
+    CpuChipIcon,
+    BriefcaseIcon,
+    HeartIcon,
+    BookOpenIcon,
+    FaceSmileIcon,
+    PhotoIcon,
+    GlobeAltIcon,
+    PlayIcon,
+    ShieldCheckIcon,
+    RocketLaunchIcon,
+    ChartPieIcon,
+  }
 
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+  })
   const [category, setCategory] = useState('General')
-  const generalIcons = EventLists.eventArray.filter(
+  const [activeCategory, setActiveCategory] = useState(1)
+
+  // Track tags for each category separately
+  const [selectedTags, setSelectedTags] = useState({
+    General: [],
+    Professional: [],
+    Popular: [],
+  })
+
+  const generalIcons = EventLists.eventArray.find(
     (e) => e.category === 'General'
   )
-  console.log(generalIcons[0].tags)
-  const [activeCategory, setActiveCategory] = useState(1)
+  const [icons, setIcons] = useState(generalIcons?.tags || [])
+
+  // Log selected tags whenever they change
+  useEffect(() => {
+    console.log(`Selected ${category} tags:`, selectedTags[category])
+  }, [selectedTags, category])
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setData({ ...data, [name]: value })
+    setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const [icons, setIcons] = useState(generalIcons[0].tags)
-  console.log('the icons are ' + icons)
+  const handleTagClick = (type) => {
+    setSelectedTags((prev) => {
+      const currentCategoryTags = prev[category]
+      const updatedCategoryTags = currentCategoryTags.includes(type)
+        ? currentCategoryTags.filter((tag) => tag !== type)
+        : [...currentCategoryTags, type]
 
-  const handleClick = (type) => {
-    setTags((prev) => {
-      if (prev.includes(type)) {
-        return prev.filter((tag) => tag !== type)
-      } else {
-        return [...prev, type]
+      return {
+        ...prev,
+        [category]: updatedCategoryTags,
       }
     })
   }
-  const handleToggling = (e) => {
-    if (e === 'General') {
-      setActiveCategory(1)
-    } else if (e === 'Popular') {
-      setActiveCategory(3)
-    } else {
-      setActiveCategory(2)
+
+  const handleCategoryChange = (newCategory) => {
+    const categoryMap = {
+      General: 1,
+      Professional: 2,
+      Popular: 3,
     }
-    setCategory(e)
-    console.log(e)
-    relevantIcons(e)
-  }
-  const relevantIcons = (category) => {
-    const tempIcons = EventLists.eventArray.filter(
-      (e) => e.category === category
+
+    setActiveCategory(categoryMap[newCategory])
+    setCategory(newCategory)
+
+    const relevantIcons = EventLists.eventArray.find(
+      (e) => e.category === newCategory
     )
-    setIcons(tempIcons[0].tags)
+    setIcons(relevantIcons?.tags || [])
   }
 
   return (
@@ -87,8 +115,9 @@ const AddEvent = () => {
           <div className="font-semibold text-lg mb-8">
             Enter the Event details below
           </div>
-          <div className="mb-8">
-            <div className="text-sm text-slate-400">
+
+          <div className="mb-8 w-full">
+            <div className="text-sm text-slate-400 mb-2">
               What's the event about?
             </div>
             <Input
@@ -97,7 +126,8 @@ const AddEvent = () => {
               name="title"
               onChange={handleChange}
               type="text"
-              value={data.title}
+              value={formData.title}
+              className="mb-4"
             />
             <Input
               placeholder="Description"
@@ -105,52 +135,56 @@ const AddEvent = () => {
               name="description"
               onChange={handleChange}
               type="text"
-              value={data.description}
+              value={formData.description}
             />
           </div>
 
-          <div>
-            <div className="text-sm text-slate-400 flex flex-row gap-2">
-              Choose a Category
-            </div>
-            <div className="grid grid-cols-2 md:flex md:flex-row md:flex-wrap gap-3 md:gap-6 mt-4">
+          <div className="w-full mb-8">
+            <div className="text-sm text-slate-400 mb-4">Choose a Category</div>
+            <div className="grid grid-cols-2 md:flex md:flex-row md:flex-wrap gap-3 md:gap-6">
               <CategoryBtn
                 type="General"
-                handleClick={(e) => handleToggling('General')}
+                handleClick={() => handleCategoryChange('General')}
                 isActeeve={activeCategory === 1}
               >
                 <Squares2X2Icon className="h-5 w-5" />
               </CategoryBtn>
               <CategoryBtn
                 type="Professional"
-                handleClick={(e) => handleToggling('Professional')}
+                handleClick={() => handleCategoryChange('Professional')}
                 isActeeve={activeCategory === 2}
               >
-                <Briefcase className="h-5 w-5" />
+                <BriefcaseIcon className="h-5 w-5" />
               </CategoryBtn>
               <CategoryBtn
-                isActeeve={activeCategory === 3}
                 type="Popular"
-                handleClick={(e) => handleToggling('Popular')}
+                handleClick={() => handleCategoryChange('Popular')}
+                isActeeve={activeCategory === 3}
               >
-                <Flame className="h-5 w-5" />
+                <FireIcon className="h-5 w-5" />
               </CategoryBtn>
             </div>
           </div>
 
-          <div>
-            <div className="text-sm text-slate-400 flex flex-row gap-2">
+          <div className="w-full">
+            <div className="text-sm text-slate-400 flex flex-row gap-2 mb-4">
               Select Relevant Tags
-              <TagIcon />
+              <TagIcon className="h-5 w-5" />
             </div>
-            <div className="grid grid-cols-2 md:flex md:flex-row md:flex-wrap gap-3 md:gap-6 mt-4">
-              {icons.map((e) => (
-                <ClickableButton
-                  type={e.heroicons}
-                  key={e.heroicons}
-                  handleClick={() => console.log('hello')}
-                ></ClickableButton>
-              ))}
+            <div className="grid grid-cols-2 md:flex md:flex-row md:flex-wrap gap-3 md:gap-6">
+              {icons.map((icon) => {
+                const IconComponent = HeroIconsMap[icon.heroicons]
+                return (
+                  <ClickableButton
+                    key={icon.tag}
+                    type={icon.tag}
+                    handleClick={() => handleTagClick(icon.tag)}
+                    isSelected={selectedTags[category].includes(icon.tag)}
+                  >
+                    {IconComponent && <IconComponent className="h-5 w-5" />}
+                  </ClickableButton>
+                )
+              })}
             </div>
           </div>
         </div>
