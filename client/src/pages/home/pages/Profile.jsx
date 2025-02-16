@@ -115,7 +115,7 @@ const Profile = () => {
                   className="relative flex flex-row rounded-md py-1 px-2 gap-1 border-2 
                          bg-neutral-500/20 border-neutral-400 hover:text-neutral-100 hover:border-neutral-100 mt-4 mr-4"
                 >
-                  Upload new picture
+                  Update Photo
                   <input
                     type="file"
                     name="profilePic"

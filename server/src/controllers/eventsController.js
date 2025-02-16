@@ -2,13 +2,11 @@ import Event from '../model/eventModel.js'
 
 class EventsController {
   async setEvents(req, res) {
-    const { description, title, startTime, endTime, tags, category } = req.body
+    const { description, title, startDateTime, endDateTime, tags, category } = req.body
     const owner = req.user
 
-    if (!description || !title || !startTime || !endTime || !tags || !category) {
-      return res.status(400).json({
-        error: 'error bad request',
-      })
+    if ((!description, !title)) {
+      return
     }
 
     if (!owner) {
@@ -23,14 +21,23 @@ class EventsController {
       owner,
       category,
       tags,
-      startTime,
-      endTime,
+      startDateTime,
+      endDateTime,
     })
 
     return res.status(201).json({
       message: 'event created sucessfully',
       data,
     })
+  }
+
+  async getEvents(_, res) {
+    try {
+      const events = await Event.find({})
+      return res.status(200).json({ events })
+    } catch (error) {
+      return res.status(500).json({ error: 'Failed to retrieve events' })
+    }
   }
 }
 

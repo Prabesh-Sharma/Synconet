@@ -56,7 +56,14 @@ const App = () => {
                     </ProtectedRoute>
                   }
                 />
-                <Route path="/home/events/addevent" element={<AddEvent />} />
+                <Route
+                  path="/home/events/addevent"
+                  element={
+                    <ProtectedRoute>
+                      <AddEvent />
+                    </ProtectedRoute>
+                  }
+                />
               </Routes>
             </BrowserRouter>
           </AuthProvider>

@@ -15,11 +15,11 @@ const eventSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    startTime: {
+    startDateTime: {
       type: Date,
       required: true,
     },
-    endTime: {
+    endDateTime: {
       type: Date,
       required: true,
     },
@@ -43,11 +43,6 @@ const eventSchema = new mongoose.Schema(
     tags: {
       type: [String],
       default: [],
-    },
-    image: {
-      type: String,
-      default:
-        'https://media.gettyimages.com/id/1094465614/photo/speaker-addressing-group-of-females.jpg?s=1024x1024&w=gi&k=20&c=Ui-OnxwLdSTw5F3VUc6sbVB-CuHVRX2EaVr4p2MnJ8Y=',
     },
   },
   {
