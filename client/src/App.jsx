@@ -13,6 +13,7 @@ import VideoChat from './pages/home/pages/VideoChat'
 import { SocketProvider } from './context/SocketContext'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import AddEvent from './pages/home/pages/event/AddEvent'
+import LandingPage from './pages/home/components/LandingPage'
 
 const queryClient = new QueryClient()
 
@@ -24,16 +25,10 @@ const App = () => {
           <AuthProvider>
             <BrowserRouter>
               <Routes>
+                <Route path="/" element={<LandingPage />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route
-                  path="/"
-                  element={
-                    <ProtectedRoute>
-                      <Navigate to="/home/dashboard" />
-                    </ProtectedRoute>
-                  }
-                />
+
                 <Route
                   path="/home"
                   element={
