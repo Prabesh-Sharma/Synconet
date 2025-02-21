@@ -17,6 +17,7 @@ const Inbox = () => {
   const handleChange = (e) => {
     setValue(e)
   }
+
   const handleSubmission = (e) => {
     if (e.key === 'Enter') {
       console.log(e.target.value)
