@@ -51,7 +51,7 @@ const VideoChat = () => {
     const tracks = localStreamRef.current.getTracks()
 
     tracks.forEach((track) => {
-      pc.addTrack(track, localStreamRef.current) //track added to from localMediaStream
+      pc.addTrack(track, localStreamRef.current) //track added to from localMediaStream // MEDIASTREAM ---> multiple tracks
     })
 
     //gets triggered whenever the current user gets streams from the remote
