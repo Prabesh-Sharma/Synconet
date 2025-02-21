@@ -16,7 +16,7 @@ const Layout = ({ children }) => {
           src="/logo.png"
           alt="logo"
           className="h-32 hidden md:block cursor-pointer"
-          onClick={() => (window.location.href = '/')}
+          onClick={() => (window.location.href = '/home/dashboard')}
         />
       </div>
 
