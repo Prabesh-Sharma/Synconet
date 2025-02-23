@@ -41,15 +41,35 @@ const Dashboard = () => {
     return days[dayNumber]
   }
 
-  // Count events by day
-  const dailyEventCounts = events.reduce((acc, event) => {
-    const date = new Date(event.updatedAt)
-    const dayName = getDayName(date.getDay())
-    acc[dayName] = (acc[dayName] || 0) + 1
-    return acc
-  }, {})
+  // Initialize all days with zero counts
+  const initialDailyCounts = {
+    Sun: 0,
+    Mon: 0,
+    Tue: 0,
+    Wed: 0,
+    Thu: 0,
+    Fri: 0,
+    Sat: 0,
+  }
 
-  // Transform into chart data format
+  // Count events by day with proper date handling
+  const dailyEventCounts = events.reduce(
+    (acc, event) => {
+      if (event.startDateTime) {
+        // Check if updatedAt exists
+        const date = new Date(event.startDateTime)
+        // Check if date is valid
+        if (!isNaN(date.getTime())) {
+          const dayName = getDayName(date.getDay())
+          acc[dayName] += 1 // Increment the count for that day
+        }
+      }
+      return acc
+    },
+    { ...initialDailyCounts }
+  ) // Start with initialized counts
+
+  // Transform into chart data format, ensuring all days are included
   const barData = Object.entries(dailyEventCounts).map(([day, count]) => ({
     name: day,
     events: count,
