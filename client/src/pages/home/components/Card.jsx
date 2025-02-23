@@ -1,9 +1,19 @@
 import { SendIcon } from 'lucide-react'
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const Card = ({ recomms }) => {
   const navigate = useNavigate()
+
+  const handleMessage = (profilePicture, username) => {
+    navigate('/home/inbox', {
+      state: {
+        profilePicture,
+        username,
+      },
+    })
+  }
+
   return (
     <div className="flex flex-wrap gap-2 m-4 items-center justify-center">
       {recomms.map((recomm, i) => (
@@ -14,7 +24,9 @@ const Card = ({ recomms }) => {
           <div className="relative group">
             <SendIcon
               className="size-8 absolute top-2 right-2 hover:text-white cursor-pointer"
-              onClick={() => navigate('/home/inbox')}
+              onClick={() =>
+                handleMessage(recomm.profilePicture, recomm.username)
+              }
             />
             {/* Tooltip */}
             <div className="cursor-default absolute right-10 px-2 py-1 bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity">

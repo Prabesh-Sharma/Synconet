@@ -1,53 +1,79 @@
-import React from 'react'
-import moment from 'moment'
-import messages from '../../../../utils/messages.json'
+// Messages.jsx
+import React, { useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
 
-function Messages(props) {
-  const ram = messages.filter(
-    (e) => e.sender === props.username && e.receiver === props.myName
-  )
-  const hari = messages.filter(
-    (e) => e.sender === props.myName && e.receiver === props.username
-  )
-  const AllMsg = [...ram, ...hari]
+const Messages = ({ messages, currentUser, otherUser }) => {
+  const messagesEndRef = useRef(null)
+  const containerRef = useRef(null)
 
-  const sortedMessage = AllMsg.sort(
-    (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
-  )
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
+
+  // Combine and sort messages from both users
+  const sortedMessages = React.useMemo(() => {
+    return messages.sort(
+      (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+    )
+  }, [messages])
 
   return (
     <div
-      className={`h-[500px] overflow-auto w-full bg-transparent text-white flex flex-col ${
-        sortedMessage.length === 0 ? 'justify-end' : 'justify-center '
-      }`}
-      style={{ scrollBehavior: ' smooth' }}
+      ref={containerRef}
+      className="h-[500px] overflow-auto w-full bg-transparent text-white flex flex-col px-4"
+      style={{ scrollBehavior: 'smooth' }}
     >
-      {sortedMessage.length === 0 ? (
-        <div className="text-center text-gray-400 mt-10 h-full justify-center self-end">
-          Nothing to show
+      {!sortedMessages.length ? (
+        <div className="text-center text-gray-400 mt-10 h-full flex items-end justify-center pb-8">
+          Start a conversation
         </div>
       ) : (
-        sortedMessage.map((e) => (
-          <React.Fragment key={e.id}>
-            <span
-              className={`h-[30px] bg-[#3d3d3d] m-3 ${
-                e.sender === props.myName ? 'self-end' : 'self-start'
-              } rounded-xl px-5`}
+        sortedMessages.map((message) => (
+          <div
+            key={message._id}
+            className={`flex flex-col ${
+              message.sender === currentUser ? 'items-end' : 'items-start'
+            } mb-4`}
+          >
+            <div
+              className={`max-w-[70%] break-words px-4 py-2 rounded-xl ${
+                message.sender === currentUser
+                  ? 'bg-blue-600 rounded-br-none'
+                  : 'bg-[#3d3d3d] rounded-bl-none'
+              }`}
             >
-              {e.message}
+              {message.message}
+            </div>
+            <span className="text-xs text-gray-400 mt-1 px-2">
+              {new Date(message.createdAt).toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
             </span>
-            <span
-              className={`h-[30px] text-xs text-purple-500 m-0 ${
-                e.sender === props.myName ? 'self-end' : 'self-start'
-              } rounded-xl px-5`}
-            >
-              {moment(e.timestamp).fromNow()} ago
-            </span>
-          </React.Fragment>
+          </div>
         ))
       )}
+      <div ref={messagesEndRef} />
     </div>
   )
+}
+
+Messages.propTypes = {
+  messages: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      sender: PropTypes.string.isRequired,
+      receiver: PropTypes.string.isRequired,
+      message: PropTypes.string.isRequired,
+      createdAt: PropTypes.string,
+    })
+  ).isRequired,
+  currentUser: PropTypes.string.isRequired,
+  otherUser: PropTypes.string.isRequired,
 }
 
 export default Messages

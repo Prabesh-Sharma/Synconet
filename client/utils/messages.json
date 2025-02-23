@@ -1,16 +1,16 @@
 [
   {
     "id": 1,
-    "sender": "keshav",
-    "receiver": "Bob",
-    "message": "Hi Bob, how are you?",
+    "sender": "Prabesh Sharma",
+    "receiver": "Sujan",
+    "message": "Hi Sujan, how are you?",
     "timestamp": "2025-01-21T09:00:00Z"
   },
   {
     "id": 2,
-    "sender": "Bob",
-    "receiver": "keshav",
-    "message": "Hi keshav , I'm good! How about you?",
+    "sender": "Sujan",
+    "receiver": "Prabesh Sharma",
+    "message": "Hi Prabesh , I'm good! How about you?",
     "timestamp": "2025-01-21T09:01:30Z"
   },
   {
