@@ -1,7 +1,19 @@
 import React from 'react'
 import { NavLink, Link } from 'react-router-dom'
+import { useAuth } from '../../../context/AuthContext'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const LandingPage = () => {
+  const { isAuthenticated } = useAuth()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/home/dashboard')
+    }
+  })
+
   return (
     <div className="flex flex-col min-h-screen w-full bg-gray-200">
       <nav className="flex items-center bg-gray-200 py-4 px-6 justify-between sticky top-0 border-b-2 border-black shadow-md">
