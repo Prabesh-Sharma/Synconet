@@ -90,7 +90,7 @@ const Events = () => {
     queryKey: ['events'], // Changed to more appropriate key
     queryFn: getEvents,
     refetchOnWindowFocus: false, // Prevent refetch on window focus
-    staleTime: 30000, // Consider data fresh for 30 seconds
+    staleTime: 3000, // Consider data fresh for 30 seconds
     refetchInterval: false, // Disable automatic refetching
     retry: 3, // Allow 3 retries if fetch fails
   })

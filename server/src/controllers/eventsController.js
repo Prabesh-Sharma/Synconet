@@ -1,6 +1,18 @@
 import Event from '../model/eventModel.js'
 
 class EventsController {
+  async eventConut(req, res) {
+    const events = await Event.find({})
+    let eventscount = 0
+    events.forEach(() => {
+      ++eventscount
+    })
+
+    res.status(200).json({
+      eventscount,
+    })
+  }
+
   async setEvents(req, res) {
     const { description, title, startDateTime, endDateTime, tags, category } = req.body
     const owner = req.user

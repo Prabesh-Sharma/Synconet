@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "sender": "Prabesh Sharma",
+    "sender": "keshav",
     "receiver": "Bob",
     "message": "Hi Bob, how are you?",
     "timestamp": "2025-01-21T09:00:00Z"
@@ -9,27 +9,27 @@
   {
     "id": 2,
     "sender": "Bob",
-    "receiver": "Prabesh Sharma",
-    "message": "Hi Prabesh Sharma, I'm good! How about you?",
+    "receiver": "keshav",
+    "message": "Hi keshav , I'm good! How about you?",
     "timestamp": "2025-01-21T09:01:30Z"
   },
   {
     "id": 3,
-    "sender": "Prabesh Sharma",
+    "sender": "keshav",
     "receiver": "Bob",
     "message": "I'm doing great, thanks for asking!",
     "timestamp": "2025-01-21T09:03:00Z"
   },
   {
     "id": 4,
-    "sender": "Bob",
-    "receiver": "Prabesh Sharma",
+    "sender": "bob",
+    "receiver": "keshav",
     "message": "Glad to hear that. Are you free for a meeting later?",
     "timestamp": "2025-01-21T09:05:15Z"
   },
   {
     "id": 5,
-    "sender": "Prabesh Sharma",
+    "sender": "keshav",
     "receiver": "Bob",
     "message": "Yes, I’m free after 2 PM. Does that work for you?",
     "timestamp": "2025-01-21T09:07:45Z"
@@ -37,13 +37,13 @@
   {
     "id": 6,
     "sender": "Bob",
-    "receiver": "Prabesh Sharma",
+    "receiver": "keshav",
     "message": "Sure, 2 PM works for me.",
     "timestamp": "2025-01-21T09:10:00Z"
   },
   {
     "id": 7,
-    "sender": "Prabesh Sharma",
+    "sender": "keshav",
     "receiver": "Bob",
     "message": "Great! Let’s meet at the coffee shop.",
     "timestamp": "2025-01-21T09:15:30Z"
@@ -51,7 +51,7 @@
   {
     "id": 8,
     "sender": "Bob",
-    "receiver": "Prabesh Sharma",
+    "receiver": "keshav",
 
 
     "message": "Perfect! Looking forward to it.",
@@ -59,7 +59,7 @@
   },
   {
     "id": 9,
-    "sender": "Prabesh Sharma",
+    "sender": "keshav",
     "receiver": "Bob",
     "message": "By the way, do you have the report ready for our meeting?",
     "timestamp": "2025-01-21T09:20:45Z"
@@ -67,7 +67,7 @@
   {
     "id": 10,
     "sender": "Bob",
-    "receiver": "Prabesh Sharma",
+    "receiver": "keshav",
     "message": "Yes, I have it prepared. I’ll share it with you during the meeting.",
     "timestamp": "2025-01-21T09:22:30Z"
   }
