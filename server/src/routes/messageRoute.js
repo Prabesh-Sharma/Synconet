@@ -5,7 +5,7 @@ import Message from '../model/messageModel.js'
 const router = express.Router()
 
 router.post('/messages', async (req, res) => {
-  console.log('Received Data:', req.body) // Check if 'id' is being sent
+  console.log('request:  ', req.body) // Check if 'id' is being sent
 
   try {
     const { sender, receiver, message } = req.body
