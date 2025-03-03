@@ -1,12 +1,17 @@
-/**
- * This is a mesh implementation of web-rtc api
- * Everytime a new user joins he creates 2n new connections in total(n being the total number of existing participants)
- * There are a total of n*(n-1)/2 total connections for n participants
- */
-
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useSocket } from '../../../context/SocketContext'
-import { Mic, MicOff, PhoneMissed, Video, VideoOff } from 'lucide-react'
+import { RiRecordCircleLine } from 'react-icons/ri'
+
+import {
+  Download,
+  Mic,
+  MicOff,
+  PhoneMissed,
+  Video,
+  VideoOff,
+  Video as VideoRecord,
+  StopCircle,
+} from 'lucide-react'
 import { useAuth } from '../../../context/AuthContext'
 import { useParams } from 'react-router-dom'
 
@@ -27,6 +32,12 @@ const VideoChat = () => {
   const [isAudioEnabled, setIsAudioEnabled] = useState(true)
   const [isVideoEnabled, setIsVideoEnabled] = useState(true)
   const { username } = useAuth()
+
+  // Recording-related state and refs
+  const [isRecording, setIsRecording] = useState(false)
+  const mediaRecorderRef = useRef(null)
+  const recordedChunksRef = useRef([])
+  const compositeStreamRef = useRef(null)
 
   const getLocalMediaStream = async () => {
     try {
@@ -164,6 +175,11 @@ const VideoChat = () => {
     }
     console.log(id)
     return () => {
+      // Stop recording if active when component unmounts
+      if (isRecording) {
+        stopRecording()
+      }
+
       // Stop all local tracks
       if (localStreamRef.current) {
         localStreamRef.current.getTracks().forEach((track) => track.stop())
@@ -224,6 +240,182 @@ const VideoChat = () => {
     }
   }
 
+  // Function to create a composite stream from all video elements
+  const createCompositeStream = () => {
+    // Create a canvas element to draw all videos
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+
+    // Set canvas size based on the number of participants
+    const totalParticipants = peers.size + 1 // Include local stream
+
+    // Set a reasonable size for the canvas
+    const canvasWidth = 1280
+    const canvasHeight = 720
+    canvas.width = canvasWidth
+    canvas.height = canvasHeight
+
+    // Compute grid layout
+    let cols = 2
+    if (totalParticipants > 4) cols = 3
+    if (totalParticipants > 9) cols = 4
+
+    const rows = Math.ceil(totalParticipants / cols)
+    const cellWidth = canvasWidth / cols
+    const cellHeight = canvasHeight / rows
+
+    // Get all video elements (local + peers)
+    const videoElements = Array.from(document.querySelectorAll('video'))
+
+    // Animation function to draw videos to canvas
+    const drawVideosToCanvas = () => {
+      ctx.fillStyle = '#000000'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+      videoElements.forEach((video, index) => {
+        if (video.srcObject) {
+          const row = Math.floor(index / cols)
+          const col = index % cols
+          const x = col * cellWidth
+          const y = row * cellHeight
+
+          ctx.drawImage(video, x, y, cellWidth, cellHeight)
+
+          // Draw participant name
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'
+          ctx.fillRect(x + 5, y + cellHeight - 25, cellWidth - 10, 20)
+          ctx.fillStyle = '#FFFFFF'
+          ctx.font = '14px Arial'
+
+          // Get username from video container
+          const videoContainer = video.closest('div')
+          const usernameElement = videoContainer?.querySelector('span')
+          const username = usernameElement?.textContent || `User ${index + 1}`
+
+          ctx.fillText(username, x + 10, y + cellHeight - 10)
+        }
+      })
+
+      animationId = requestAnimationFrame(drawVideosToCanvas)
+    }
+
+    let animationId = requestAnimationFrame(drawVideosToCanvas)
+
+    // Create a stream from the canvas
+    const canvasStream = canvas.captureStream(30) // 30 FPS
+
+    // Add audio tracks from all participants
+    const audioTracks = []
+
+    // Add local audio if enabled
+    if (localStreamRef.current) {
+      const localAudioTracks = localStreamRef.current.getAudioTracks()
+      if (localAudioTracks.length > 0 && isAudioEnabled) {
+        audioTracks.push(localAudioTracks[0])
+      }
+    }
+
+    // Add peer audio tracks
+    peers.forEach(({ stream }) => {
+      const peerAudioTracks = stream.getAudioTracks()
+      if (peerAudioTracks.length > 0) {
+        audioTracks.push(peerAudioTracks[0])
+      }
+    })
+
+    // Add audio tracks to canvas stream
+    audioTracks.forEach((track) => {
+      canvasStream.addTrack(track)
+    })
+
+    // Store cleanup function
+    const cleanup = () => {
+      cancelAnimationFrame(animationId)
+    }
+
+    return { stream: canvasStream, cleanup }
+  }
+
+  // Function to start recording
+  const startRecording = () => {
+    try {
+      // Create a composite stream from all videos
+      const { stream, cleanup } = createCompositeStream()
+      compositeStreamRef.current = { stream, cleanup }
+
+      // Set up MediaRecorder with the composite stream
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: 'video/webm;codecs=vp9,opus',
+        videoBitsPerSecond: 3000000, // 3 Mbps for good quality
+      })
+
+      mediaRecorderRef.current = mediaRecorder
+      recordedChunksRef.current = []
+
+      // Event handler for data available
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          recordedChunksRef.current.push(event.data)
+        }
+      }
+
+      // Event handler for recording stopped
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunksRef.current, { type: 'video/webm' })
+
+        // Create a download link
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
+        a.href = url
+        a.download = `call-recording-${roomId}-${timestamp}.webm`
+        a.style.display = 'none'
+
+        // Add to DOM and trigger download
+        document.body.appendChild(a)
+        a.click()
+
+        // Clean up
+        setTimeout(() => {
+          document.body.removeChild(a)
+          URL.revokeObjectURL(url)
+        }, 100)
+
+        // Clean up composite stream
+        if (compositeStreamRef.current) {
+          compositeStreamRef.current.cleanup()
+          compositeStreamRef.current = null
+        }
+      }
+
+      // Start recording in 1-second chunks
+      mediaRecorder.start(1000)
+      setIsRecording(true)
+    } catch (error) {
+      console.error('Error starting recording:', error)
+    }
+  }
+
+  // Function to stop recording
+  const stopRecording = () => {
+    if (
+      mediaRecorderRef.current &&
+      mediaRecorderRef.current.state !== 'inactive'
+    ) {
+      mediaRecorderRef.current.stop()
+      setIsRecording(false)
+    }
+  }
+
+  // Toggle recording
+  const toggleRecording = () => {
+    if (isRecording) {
+      stopRecording()
+    } else {
+      startRecording()
+    }
+  }
+
   return (
     <>
       <div className="relative w-full h-screen">
@@ -274,6 +466,19 @@ const VideoChat = () => {
             <div className="cursor-default absolute px-2 py-1 bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity bottom-8 right-[1px]">
               {isVideoEnabled ? 'Turn Video Off' : 'Turn Video On'}
             </div>
+          </div>
+          <div onClick={toggleRecording} className="group relative">
+            {isRecording ? (
+              <StopCircle color="red" />
+            ) : (
+              <RiRecordCircleLine className="size-6" />
+            )}
+            <div className="cursor-default absolute px-2 py-1 bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity bottom-8 right-[1px]">
+              {isRecording ? 'Stop Recording' : 'Start Recording'}
+            </div>
+            {isRecording && (
+              <div className="absolute -top-2 -right-2 w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+            )}
           </div>
           <div
             className="group relative"
