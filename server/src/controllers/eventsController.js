@@ -51,6 +51,32 @@ class EventsController {
       return res.status(500).json({ error: 'Failed to retrieve events' })
     }
   }
+
+  async deleteEvent(req, res) {
+    try {
+      const eventId = req.params.id
+      const userId = req.user
+      console.log('users id', req.user)
+
+      const event = await Event.findById(eventId)
+
+      if (!event) {
+        return res.status(404).json({ message: 'Event not found' })
+      }
+
+      if (userId !== event.owner.toString()) {
+        return res.status(403).json({
+          message: "You don't have permission to delete this event as you're not the owner.",
+        })
+      }
+
+      await event.deleteOne()
+      return res.status(200).json({ message: 'Event deleted successfully' })
+    } catch (error) {
+      console.error('Delete event error:', error)
+      return res.status(500).json({ message: 'Failed to delete the event' })
+    }
+  }
 }
 
 const eventsController = new EventsController()

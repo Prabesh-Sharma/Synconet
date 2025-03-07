@@ -8,5 +8,6 @@ const router = Router()
 router.route('/set').post(protect, catchAsyncErr(eventsController.setEvents))
 router.route('/get').get(catchAsyncErr(eventsController.getEvents))
 router.route('/get/eventcnt').get(catchAsyncErr(eventsController.eventConut))
+router.route(`/delete/:id`).delete(protect, catchAsyncErr(eventsController.deleteEvent))
 
 export default router

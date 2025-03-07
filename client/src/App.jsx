@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
 import Home from './pages/home/Home'
 import Dashboard from './pages/home/pages/Dashboard'
 import Events from './pages/home/pages/Events'
@@ -64,6 +65,7 @@ const App = () => {
           </AuthProvider>
         </SocketProvider>
       </QueryClientProvider>
+      <ToastContainer position="top-right" autoClose={5000} />
     </main>
   )
 }
