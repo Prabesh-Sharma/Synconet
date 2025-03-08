@@ -13,6 +13,7 @@ const initializeSocket = (httpServer) => {
 
   io.on('connection', (socket) => {
     console.log('A user connected: ' + socket.id);
+    console.log('A user connected: ' + socket.id);
 
     socket.on('join-room', ({ roomId, username }) => {
       participants.push({ id: socket.id, username, roomId });
@@ -20,8 +21,15 @@ const initializeSocket = (httpServer) => {
       io.to(roomId).emit('participants', participants);
       console.log(`${username} joined room ${roomId}`);
     });
+      participants.push({ id: socket.id, username, roomId });
+      socket.join(roomId);
+      io.to(roomId).emit('participants', participants);
+      console.log(`${username} joined room ${roomId}`);
+    });
 
     socket.on('offer', ({ to, offer }) => {
+      socket.to(to).emit('offer', { from: socket.id, offer });
+    });
       socket.to(to).emit('offer', { from: socket.id, offer });
     });
 
