@@ -5,6 +5,8 @@ import Input from '../../../auth/form/components/Input'
 import EventLists from './events.json'
 import ClickableButton from '../../components/ClickableButton'
 import CategoryBtn from '../../components/CategoryButton'
+import { io } from "socket.io-client";
+import { API_URL } from '../../../../../constants'
 
 import {
   AcademicCapIcon,
@@ -157,6 +159,7 @@ const AddEvent = () => {
     setIcons(relevantIcons?.tags || [])
   }
 
+  const socket = io(API_URL); 
   const handleSubmit = async () => {
     const finalData = {
       ...formData,
@@ -175,6 +178,11 @@ const AddEvent = () => {
         },
       })
       console.log('Event created successfully:', response.data)
+      socket.emit('new-event', { 
+        message: `A new event '${formData.title}' has been added!`,
+        timestamp: new Date().toISOString() 
+      });
+      
       navigate('/home/events')
     } catch (error) {
       console.error('Error creating event:', error)

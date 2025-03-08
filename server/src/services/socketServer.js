@@ -1,88 +1,90 @@
-import { Server } from 'socket.io'
-
-const room = new Map()
+import { Server } from 'socket.io';
+import cors from 'cors';
 
 const initializeSocket = (httpServer) => {
   const io = new Server(httpServer, {
     cors: {
-      origin: '*',
-      methods: ['GET', 'POST'],
+      origin: '*',  // Frontend URL
+      methods: ["GET", "POST"],
     },
-  })
+  });
 
-  const removeParticipantFromRoom = (socketId, roomId) => {
-    const people = room.get(roomId)
-    if (people) {
-      const filtered = people.filter((participant) => participant.id !== socketId)
-      if (filtered.length === 0) {
-        room.delete(roomId)
-      } else {
-        room.set(roomId, filtered)
-      }
-    }
-  }
+  let participants = []; // Track participants by their socket ID
 
   io.on('connection', (socket) => {
-    console.log(socket.id)
-    socket.on('message', ({ message }) => {
-      console.log(message)
-    })
+    console.log('A user connected: ' + socket.id);
 
     socket.on('join-room', ({ roomId, username }) => {
-      socket.join(roomId)
-
-      const participants = room.get(roomId) || []
-      socket.emit('participants', participants)
-
-      if (!participants.map((p) => p.id).includes(socket.id)) {
-        participants.push({ id: socket.id, username })
-      }
-
-      room.set(roomId, participants)
-      socket.to(roomId).emit('new-user-joined', { id: socket.id, username })
-      socket.roomId = roomId
-      console.log(room)
-    })
+      participants.push({ id: socket.id, username, roomId });
+      socket.join(roomId);
+      io.to(roomId).emit('participants', participants);
+      console.log(`${username} joined room ${roomId}`);
+    });
 
     socket.on('offer', ({ to, offer }) => {
-      socket.to(to).emit('offer', {
-        offer,
-        from: socket.id,
-      })
-    })
+      socket.to(to).emit('offer', { from: socket.id, offer });
+    });
 
     socket.on('answer', ({ to, answer }) => {
-      socket.to(to).emit('answer', {
-        answer,
-        from: socket.id,
-      })
-    })
+      socket.to(to).emit('answer', { from: socket.id, answer });
+    });
 
-    socket.on('ice-candidate', ({ to, candidate }) => {
-      socket.to(to).emit('ice-candidate', {
-        candidate,
-        from: socket.id,
-      })
-    })
+    socket.on('ice-candidate', ({ candidate, to }) => {
+      socket.to(to).emit('ice-candidate', { from: socket.id, candidate });
+    });
 
+    socket.on('new-event', (event) => {
+      io.emit('new-event', { 
+        message: event.message,  
+        timestamp: new Date(), 
+      });
+    });    
+
+    // Moderator: Mute a user
+    socket.on('mute-user', ({ userId }) => {
+      io.to(userId).emit('mute');
+    });
+
+    // Moderator: Kick a user
+    socket.on('kick-user', ({ userId, roomId }) => {
+      io.to(userId).emit('kick');
+      socket.to(userId).disconnect();
+      participants = participants.filter((p) => p.id !== userId);
+      io.to(roomId).emit('participants', participants); // Update participants list in the room
+      io.to(roomId).emit('user-left', { userId }); // Notify others
+    });
+
+    // Hand Raise Event
+    socket.on('hand-raise', ({ username, roomId }) => {
+      console.log(`${username} raised hand in room: ${roomId}`);
+      io.to(roomId).emit('hand-raise-notification', { username });
+    });
+
+    // Handle thumbs-up event
+    socket.on('thumbs-up', ({ username, roomId }) => {
+      io.to(roomId).emit('thumbs-up-notification', { username });
+    });
+
+    // Handle thumbs-down event
+    socket.on('thumbs-down', ({ username, roomId }) => {
+      io.to(roomId).emit('thumbs-down-notification', { username });
+    });
+
+    // Handle user disconnect
     socket.on('disconnect', () => {
-      console.log('Client disconnected:', socket.id)
-
-      if (socket.roomId) {
-        removeParticipantFromRoom(socket.id, socket.roomId)
-
-        socket.to(socket.roomId).emit('user-left', socket.id)
+      console.log('A user disconnected: ' + socket.id);
+      const user = participants.find((p) => p.id === socket.id);
+      if (user) {
+        participants = participants.filter((p) => p.id !== socket.id);
+        io.to(user.roomId).emit('participants', participants); // Update participants list
+        io.to(user.roomId).emit('user-left', { userId: socket.id }); // Notify others
       }
-    })
-  })
+    });
+  });
+};
 
-  return () => {
-    io.close()
-    room.clear()
-  }
-}
+export default initializeSocket;
 
-export default initializeSocket
 
 /*
 	room --> {participantId,username}

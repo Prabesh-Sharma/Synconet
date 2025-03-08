@@ -15,6 +15,7 @@ import { SocketProvider } from './context/SocketContext'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import AddEvent from './pages/home/pages/event/AddEvent'
 import LandingPage from './pages/home/components/LandingPage'
+import Notifications from './pages/home/pages/Notifications'
 
 const queryClient = new QueryClient()
 
@@ -42,6 +43,7 @@ const App = () => {
                   <Route path="inbox" element={<Inbox />} />
                   <Route path="events" element={<Events />} />
                   <Route path="network" element={<Network />} />
+                  <Route path="notifications" element={<Notifications />} />
                   <Route path="profile" element={<Profile />} />
                 </Route>
                 <Route

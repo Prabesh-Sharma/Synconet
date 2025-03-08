@@ -1,6 +1,7 @@
 import {
   ArrowLeftStartOnRectangleIcon,
   Bars4Icon,
+  BellIcon,
   CalendarDateRangeIcon,
   RectangleGroupIcon,
   UserGroupIcon,
@@ -56,6 +57,9 @@ const HamburgerMenu = () => {
           </NavigationLink>
           <NavigationLink name="Network" isOpen={true} to="/home/network">
             <UserGroupIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+          </NavigationLink>
+          <NavigationLink name="Notifications" isOpen={true} to="/home/notifications">
+            <BellIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
           </NavigationLink>
           <NavigationLink name="Profile" isOpen={true} to="/home/profile">
             <CircleUserRound className="stroke-inherit stroke-[0.75] min-w-8 w-8" />

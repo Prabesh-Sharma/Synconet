@@ -7,6 +7,7 @@ import {
   UserGroupIcon,
   ArrowLeftStartOnRectangleIcon,
   InboxArrowDownIcon,
+  BellIcon,
 } from '@heroicons/react/24/outline'
 import { useAuth } from '../../../context/AuthContext.jsx'
 import { CircleUserRound } from 'lucide-react'
@@ -63,6 +64,9 @@ const Navigation = () => {
             </NavigationLink>
             <NavigationLink name="Network" isOpen={isOpen} to="/home/network">
               <UserGroupIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+            </NavigationLink>
+            <NavigationLink name="Notifications" isOpen={isOpen} to="/home/notifications">
+              <BellIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
             </NavigationLink>
           </div>
         </div>
