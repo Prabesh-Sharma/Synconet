@@ -16,7 +16,7 @@ const HamburgerMenu = () => {
   const { logout } = useAuth()
   return (
     <div
-      className="bg-neutral-900 shadow-neutral-600 z-10 fixed top-0 
+      className="bg-neutral-900 shadow-neutral-600 z-20 fixed top-0 
                           mx-auto w-full flex-col flex justify-between"
     >
       <div className="w-full flex justify-between items-center px-2">

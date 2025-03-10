@@ -11,6 +11,7 @@ import http from 'http'
 import initializeSocket from './src/services/socketServer.js'
 import extraRoute from './src/routes/extraRoute.js'
 import messageRoute from './src/routes/messageRoute.js'
+import { setupExpiredEventsCleanup } from './src/controllers/eventsController.js'
 
 config()
 const app = express()
@@ -41,6 +42,7 @@ app.use('/api/interest', interestRoute)
 app.use('/api/events', eventRoute)
 app.use('/api', extraRoute)
 app.use('/api', messageRoute)
+setupExpiredEventsCleanup()
 
 httpServer.listen(process.env.PORT, '0.0.0.0', () => {
   console.log(`the server has started on port ${process.env.PORT}`)

@@ -79,5 +79,42 @@ class EventsController {
   }
 }
 
+async function clearExpiredEvents() {
+  try {
+    const currentDate = new Date()
+
+    // Find all events where startDateTime is less than current time
+    const result = await Event.deleteMany({
+      startDateTime: { $lt: currentDate },
+    })
+
+    console.log(`Cleared ${result.deletedCount} expired events at ${currentDate.toISOString()}`)
+
+    return {
+      success: true,
+      message: `Successfully cleared ${result.deletedCount} expired events`,
+      count: result.deletedCount,
+    }
+  } catch (error) {
+    console.error('Error clearing expired events:', error)
+    return {
+      success: false,
+      message: 'Failed to clear expired events',
+    }
+  }
+}
+
+function setupExpiredEventsCleanup() {
+  // Run once immediately on startup
+  clearExpiredEvents()
+
+  // Then run every 30 minutes (30 * 60 * 1000 ms)
+  const THIRTY_MINUTES = 30 * 60 * 1000
+  setInterval(clearExpiredEvents, THIRTY_MINUTES)
+
+  console.log('Expired events cleanup scheduled to run every 30 minutes')
+}
+
 const eventsController = new EventsController()
 export default eventsController
+export { clearExpiredEvents, setupExpiredEventsCleanup }

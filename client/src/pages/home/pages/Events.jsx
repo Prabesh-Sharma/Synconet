@@ -6,15 +6,14 @@ import {
   PlusIcon,
   Calendar,
   Clock,
-  User,
   Briefcase,
   Trash2,
+  Edit,
 } from 'lucide-react'
 import axios from '../../../../axiosConfig.js'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { FireIcon, Squares2X2Icon } from '@heroicons/react/24/solid'
 import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 
 const EventCard = ({ event }) => {
   const navigate = useNavigate()
@@ -89,11 +88,18 @@ const EventCard = ({ event }) => {
 
   return (
     <div className="bg-neutral-800 rounded-lg p-6 hover:bg-neutral-700/30 transition-colors cursor-default relative">
-      {/* Delete button */}
+      {/* Edit button */}
+      <button
+        onClick={() => {
+          navigate('/home/events/addevent', { state: { event } })
+        }}
+        className="absolute top-4 right-12 text-neutral-400 hover:text-blue-500 transition-colors"
+      >
+        <Edit className="size-7" />
+      </button>
       <button
         onClick={() => setShowDeleteConfirm(true)}
         className="absolute top-4 right-4 text-neutral-400 hover:text-red-500 transition-colors"
-        aria-label="Delete event"
       >
         <Trash2 className="size-7" />
       </button>

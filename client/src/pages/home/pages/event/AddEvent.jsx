@@ -42,11 +42,103 @@ import {
 
 import axios from '../../../../../axiosConfig'
 import { ArrowLeftFromLine, CpuIcon, ServerCog, Handshake } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const AddEvent = () => {
   const [token, _] = useState(localStorage.getItem('token'))
   const navigate = useNavigate()
+  const location = useLocation()
+
+  // Extract event data from location state safely
+  const eventFromState = location.state?.event || null
+
+  // Default category mapping
+  const categoryMap = {
+    General: 1,
+    Professional: 2,
+    Popular: 3,
+  }
+
+  // Initialize form data with values from state or defaults
+  const [formData, setFormData] = useState({
+    title: eventFromState?.title || '',
+    description: eventFromState?.description || '',
+  })
+
+  // Initialize category with value from state or default
+  const [category, setCategory] = useState(
+    eventFromState?.category || 'General'
+  )
+
+  // Set active category button based on state or default
+  const [activeCategory, setActiveCategory] = useState(
+    eventFromState?.category ? categoryMap[eventFromState.category] : 1
+  )
+
+  // Initialize date values from state or defaults
+  const [startDateTime, setStartDateTime] = useState(
+    eventFromState?.startDateTime
+      ? new Date(eventFromState.startDateTime)
+      : new Date()
+  )
+
+  const [endDateTime, setEndDateTime] = useState(
+    eventFromState?.endDateTime
+      ? new Date(eventFromState.endDateTime)
+      : new Date()
+  )
+
+  // Initialize selected tags with data from state if available
+  const [selectedTags, setSelectedTags] = useState(() => {
+    const initialTags = {
+      General: [],
+      Professional: [],
+      Popular: [],
+    }
+
+    // If we have event data and it has tags, set them for the correct category
+    if (
+      eventFromState?.tags &&
+      Array.isArray(eventFromState.tags) &&
+      eventFromState.category
+    ) {
+      initialTags[eventFromState.category] = eventFromState.tags
+    }
+
+    return initialTags
+  })
+
+  const [icons, setIcons] = useState([])
+
+  // Load icons for the selected category
+  useEffect(() => {
+    const relevantIcons = EventLists.eventArray.find(
+      (e) => e.category === category
+    )
+    setIcons(relevantIcons?.tags || [])
+  }, [category])
+
+  // For debugging - log when state changes
+  useEffect(() => {
+    console.log('Current category:', category)
+    console.log('Active category button:', activeCategory)
+    console.log('Selected tags:', selectedTags)
+    console.log('Start Date/Time:', startDateTime)
+    console.log('End Date/Time:', endDateTime)
+    console.log('Form data:', formData)
+
+    if (eventFromState) {
+      console.log('Event data from state:', eventFromState)
+    }
+  }, [
+    category,
+    activeCategory,
+    selectedTags,
+    startDateTime,
+    endDateTime,
+    formData,
+    eventFromState,
+  ])
 
   const HeroIconsMap = {
     // General category
@@ -87,41 +179,6 @@ const AddEvent = () => {
     ChartPieIcon,
   }
 
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-  })
-  const [category, setCategory] = useState('General')
-  const [activeCategory, setActiveCategory] = useState(1)
-  const [startDateTime, setStartDateTime] = useState(new Date())
-  const [endDateTime, setEndDateTime] = useState(new Date())
-
-  // Track tags for each category separately
-  const [selectedTags, setSelectedTags] = useState({
-    General: [],
-    Professional: [],
-    Popular: [],
-  })
-
-  const generalIcons = EventLists.eventArray.find(
-    (e) => e.category === 'General'
-  )
-  const [icons, setIcons] = useState(generalIcons?.tags || [])
-
-  // Log selected tags whenever they change
-  useEffect(() => {
-    console.log(`Selected ${category} tags:`, selectedTags[category])
-  }, [selectedTags, category])
-
-  useEffect(() => {
-    console.log(formData)
-  }, [formData])
-
-  useEffect(() => {
-    console.log('Start Date/Time:', startDateTime)
-    console.log('End Date/Time:', endDateTime)
-  }, [startDateTime, endDateTime])
-
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
@@ -129,7 +186,7 @@ const AddEvent = () => {
 
   const handleTagClick = (type) => {
     setSelectedTags((prev) => {
-      const currentCategoryTags = prev[category]
+      const currentCategoryTags = prev[category] || []
       const updatedCategoryTags = currentCategoryTags.includes(type)
         ? currentCategoryTags.filter((tag) => tag !== type)
         : [...currentCategoryTags, type]
@@ -142,28 +199,22 @@ const AddEvent = () => {
   }
 
   const handleCategoryChange = (newCategory) => {
-    const categoryMap = {
-      General: 1,
-      Professional: 2,
-      Popular: 3,
-    }
-
-    setActiveCategory(categoryMap[newCategory])
     setCategory(newCategory)
-
-    const relevantIcons = EventLists.eventArray.find(
-      (e) => e.category === newCategory
-    )
-    setIcons(relevantIcons?.tags || [])
+    setActiveCategory(categoryMap[newCategory])
   }
 
   const handleSubmit = async () => {
     const finalData = {
       ...formData,
       category,
-      tags: selectedTags[category],
+      tags: selectedTags[category] || [],
       startDateTime,
       endDateTime,
+    }
+
+    // If we have an existing event ID, include it for updating
+    if (eventFromState?.id) {
+      finalData.id = eventFromState.id
     }
 
     console.log('Final Data:', finalData)
@@ -174,10 +225,18 @@ const AddEvent = () => {
           Authorization: `Bearer ${token}`,
         },
       })
-      console.log('Event created successfully:', response.data)
+      console.log(
+        eventFromState
+          ? 'Event updated successfully:'
+          : 'Event created successfully:',
+        response.data
+      )
       navigate('/home/events')
     } catch (error) {
-      console.error('Error creating event:', error)
+      console.error(
+        eventFromState ? 'Error updating event:' : 'Error creating event:',
+        error
+      )
     }
   }
 
@@ -288,7 +347,9 @@ const AddEvent = () => {
         <div className="h-auto mb-2 border-neutral-500/50 w-[80%] bg-neutral-800/20 rounded border text-white p-4 mt-10">
           <div className="flex flex-col items-center">
             <div className="font-semibold text-lg mb-8">
-              Enter the Event details below
+              {eventFromState
+                ? 'Update Event Details'
+                : 'Enter the Event details below'}
             </div>
 
             <div className="mb-8 w-full">
@@ -356,7 +417,7 @@ const AddEvent = () => {
                       key={icon.tag}
                       type={icon.tag}
                       handleClick={() => handleTagClick(icon.tag)}
-                      isSelected={selectedTags[category].includes(icon.tag)}
+                      isSelected={selectedTags[category]?.includes(icon.tag)}
                     >
                       {IconComponent && <IconComponent className="h-5 w-5" />}
                     </ClickableButton>
@@ -410,7 +471,7 @@ const AddEvent = () => {
               className="bg-white text-black rounded-md px-4 py-2 border-blue-800 border-2 mt-8 hover:bg-blue-400 hover:rounded-xl transition-all duration-200"
               onClick={handleSubmit}
             >
-              Submit
+              {eventFromState ? 'Update Event' : 'Submit'}
             </button>
           </div>
         </div>
